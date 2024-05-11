@@ -34,8 +34,8 @@ const SignUp = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const pending = toast.loading('Authenticating');
+		const url = 'https://learnable-2024-group-8.onrender.com/api/auth/signup';
 
-		const url = 'https://learnable-2024-group-8.onrender.com/';
 		try {
 			const response = await axios
 				.post(url, JSON.stringify({ fullname, email, username, password }))
