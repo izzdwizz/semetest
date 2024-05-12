@@ -33,7 +33,7 @@ export function AppWrapper({ children }) {
 	}
 
 	if (!token) {
-		router.push('/Onboardging');
+		router.push('/Onboarding');
 	}
 	return (
 		<AppContext.Provider
