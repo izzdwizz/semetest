@@ -9,7 +9,7 @@ export function AppWrapper({ children }) {
 	const url = 'https://learnable-2024-group-8.onrender.com/';
 	const router = useRouter();
 	const cookies = new Cookies();
-	const [token, setToken] = useState('');
+	const [token, setToken] = useState(null);
 	const [user, setUser] = useState(null);
 
 	cookies.set('jwt_token', token);
@@ -28,8 +28,8 @@ export function AppWrapper({ children }) {
 		setToken(cookies.get('jwt_token'));
 	}, []);
 
-	if (!token) {
-		router.push('/Onboarding');
+	if (token) {
+		router.push('/home');
 	}
 	return (
 		<AppContext.Provider
