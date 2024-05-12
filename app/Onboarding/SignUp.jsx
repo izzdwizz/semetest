@@ -58,7 +58,7 @@ const SignUp = () => {
 					setFullname('');
 					setUsername('');
 					setConfirmP('');
-					redirect('/home');
+					// redirect('/home');
 				});
 		} catch (error) {
 			setError(error.message);
