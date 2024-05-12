@@ -7,7 +7,10 @@ import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
 export default function Home() {
-	const { setUser } = useAppContext();
+	const { setUser, token } = useAppContext();
+	if (!token) {
+		router.push('/Onboarding');
+	}
 	const router = useRouter();
 	const cookies = new Cookies();
 	// SIgnout function
