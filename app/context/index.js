@@ -31,6 +31,10 @@ export function AppWrapper({ children }) {
 	if (token) {
 		router.push('/home');
 	}
+
+	if (!token) {
+		router.push('/Onboardging');
+	}
 	return (
 		<AppContext.Provider
 			value={{
