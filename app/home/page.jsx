@@ -8,10 +8,11 @@ import axios from 'axios';
 
 export default function Home() {
 	const { setUser, token } = useAppContext();
+
+	const router = useRouter();
 	if (!token) {
 		router.push('/Onboarding');
 	}
-	const router = useRouter();
 	const cookies = new Cookies();
 	// SIgnout function
 	const HandleSignOut = async () => {
