@@ -3,6 +3,7 @@ import Image from 'next/image';
 import logo from '../../public/assets/images/seemelogo.png';
 import Cookies from 'universal-cookie';
 import { useAppContext } from '../context';
+import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
 
@@ -10,9 +11,15 @@ export default function Home() {
 	const { setUser, token } = useAppContext();
 
 	const router = useRouter();
-	if (!token) {
-		router.push('/Onboarding');
-	}
+
+	useEffect(() => {
+		if (!token) {
+			setTimeout(() => {
+				router.push('/Onboarding');
+			}, 5000);
+		}
+	}, [token]);
+
 	const cookies = new Cookies();
 	// SIgnout function
 	const HandleSignOut = async () => {
