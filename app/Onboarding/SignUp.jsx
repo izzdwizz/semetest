@@ -38,6 +38,8 @@ const SignUp = () => {
 	// SignUp function
 
 	const handleSubmit = async (e) => {
+		const pending = toast.loading('Authenticating');
+
 		// Validation checks
 		if (password.length < 8) {
 			toast.update(pending, {
@@ -70,7 +72,6 @@ const SignUp = () => {
 			return;
 		}
 		e.preventDefault();
-		const pending = toast.loading('Authenticating');
 		const url = 'https://learnable-2024-group-8.onrender.com/api/auth/signup';
 
 		try {
