@@ -40,16 +40,33 @@ const SignUp = () => {
 	const handleSubmit = async (e) => {
 		// Validation checks
 		if (password.length < 8) {
-			toast.error('Password must be at least 8 characters', {
+			toast.update(pending, {
+				render: `Password must be 8 characters long`,
+				type: 'error',
+				isLoading: false,
 				autoClose: 3000,
 			});
 			return;
 		}
 
 		if (!email.includes('@')) {
-			toast.error('Please enter a valid email address', {
+			toast.update(pending, {
+				render: `Enter a valid email address`,
+				type: 'error',
+				isLoading: false,
 				autoClose: 3000,
 			});
+			return;
+		}
+
+		if (confirmP !== password) {
+			toast.update(pending, {
+				render: `Confirm password and password are not the same`,
+				type: 'error',
+				isLoading: false,
+				autoClose: 3000,
+			});
+
 			return;
 		}
 		e.preventDefault();
