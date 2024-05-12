@@ -122,23 +122,23 @@ body {
 /* Text Field classes */
 
 .MuiOutlinedInput {
-	margin-top: 2rem;
+	margin-top: 2rem !important;
 }
 .MuiOutlinedInput-notchedOutline {
-	border-radius: 8px;
+	border-radius: 8px !important;
 }
 
 /* Textfield padding */
 .MuiInputBase-input-MuiOutlinedInput-input,
 .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
-	padding: 11.5px 33px;
-	font-size: 0.71rem;
+	padding: 11.5px 33px !important;
+	font-size: 0.71rem !important;
 }
 .css-o9k5xi-MuiInputBase-root-MuiOutlinedInput-root {
-	padding-right: 33px;
-	padding-left: 23px;
-	font-size: 0.71rem;
-	height: 2.67rem;
+	padding-right: 33px !important;
+	padding-left: 23px !important;
+	font-size: 0.71rem !important;
+	height: 2.67rem !important;
 }
 
 /* placeholder */
