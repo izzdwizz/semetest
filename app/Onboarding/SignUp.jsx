@@ -14,7 +14,7 @@ import nosee from '../../public/assets/images/eye-slash.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import { redirect } from 'next/navigation';
+import { useRouter, redirect } from 'next/navigation';
 const SignUp = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [fullname, setFullname] = useState('');
@@ -28,6 +28,8 @@ const SignUp = () => {
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
 	};
+
+	const router = useRouter();
 
 	// SignUp function
 
@@ -58,7 +60,8 @@ const SignUp = () => {
 					setFullname('');
 					setUsername('');
 					setConfirmP('');
-					// redirect('/home');
+					router.push('/home');
+
 				});
 		} catch (error) {
 			setError(error.message);
