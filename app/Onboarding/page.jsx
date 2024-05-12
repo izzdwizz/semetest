@@ -10,7 +10,7 @@ const page = () => {
 
 	return (
 		<div className='w-screen h-screen bg-[#280050ec]  flex  overflow-hidden'>
-			<div className='w-full bg-[#280050dd] relative h-full brightness-90  seemebg'>
+			<div className='w-full bg-[#280050dd] relative h-full brightness-90  seemebg hidden md:flex'>
 				<Image
 					src={signup_img}
 					alt='popular blog bg-img'

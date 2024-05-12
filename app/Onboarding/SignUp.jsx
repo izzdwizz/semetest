@@ -63,7 +63,7 @@ const SignUp = () => {
 
 		if (confirmP !== password) {
 			toast.update(pending, {
-				render: `Confirm password and password are not the same`,
+				render: `Confirm password and password are different`,
 				type: 'error',
 				isLoading: false,
 				autoClose: 3000,
