@@ -38,6 +38,20 @@ const SignUp = () => {
 	// SignUp function
 
 	const handleSubmit = async (e) => {
+		// Validation checks
+		if (password.length < 8) {
+			toast.error('Password must be at least 8 characters', {
+				autoClose: 3000,
+			});
+			return;
+		}
+
+		if (!email.includes('@')) {
+			toast.error('Please enter a valid email address', {
+				autoClose: 3000,
+			});
+			return;
+		}
 		e.preventDefault();
 		const pending = toast.loading('Authenticating');
 		const url = 'https://learnable-2024-group-8.onrender.com/api/auth/signup';
