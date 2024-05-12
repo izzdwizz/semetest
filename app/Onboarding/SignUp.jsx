@@ -38,7 +38,12 @@ const SignUp = () => {
 
 		try {
 			const response = await axios
-				.post(url, JSON.stringify({ fullname, username, email, password }))
+				.post(url, JSON.stringify({ fullname, username, email, password }), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					withCredentials: false,
+				})
 				.then((res) => {
 					console.log(res);
 					toast.update(pending, {
