@@ -28,8 +28,8 @@ export function AppWrapper({ children }) {
 		setToken(cookies.get('jwt_token'));
 	}, []);
 
-	if (token) {
-		router.push('/home');
+	if (!token) {
+		router.push('/Onboarding');
 	}
 	return (
 		<AppContext.Provider

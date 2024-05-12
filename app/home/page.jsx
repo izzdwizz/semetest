@@ -9,7 +9,6 @@ import axios from 'axios';
 export default function Home() {
 	const { setUser } = useAppContext();
 	const router = useRouter();
-	const url = 'https://learnable-2024-group-8.onrender.com/';
 	const cookies = new Cookies();
 	// SIgnout function
 	const HandleSignOut = async () => {
@@ -23,12 +22,11 @@ export default function Home() {
 				}
 			});
 
+			cookies.remove('jwt_token');
 			setUser(null);
 		} catch (error) {
 			console.log(error.message);
 		}
-
-		cookies.remove('jwt_token');
 	};
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-center py-24 bg-[#280050] overflow-y-hidden'>
