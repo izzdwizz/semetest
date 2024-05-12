@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import { useState } from 'react';
 import Box from '@mui/material/Box';
@@ -15,6 +17,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useRouter, redirect } from 'next/navigation';
+import { useAppContext } from '../context';
 const SignUp = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [fullname, setFullname] = useState('');
@@ -24,6 +27,7 @@ const SignUp = () => {
 	const [confirmP, setConfirmP] = useState('');
 	const [error, setError] = useState('');
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const { setToken, token } = useAppContext();
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -40,11 +44,16 @@ const SignUp = () => {
 
 		try {
 			const response = await axios
-				.post(url, JSON.stringify({ fullname, username, email, password }))
+				.post(url, JSON.stringify({ fullname, username, email, password }), {
+					headers: {
+						'Content-Type': 'application/json',
+					},
+					withCredentials: false,
+				})
 				.then((res) => {
 					console.log(res);
 					toast.update(pending, {
-						render: 'Successful Login',
+						render: 'Successful Sign Up',
 						type: 'success',
 						autoClose: 3000,
 						isLoading: false,
@@ -55,8 +64,8 @@ const SignUp = () => {
 					setFullname('');
 					setUsername('');
 					setConfirmP('');
+					setToken(res.data.token);
 					router.push('/home');
-
 				});
 		} catch (error) {
 			setError(error.message);

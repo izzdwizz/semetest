@@ -1,5 +1,5 @@
+'use client';
 import React from 'react';
-
 import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
@@ -13,11 +13,16 @@ import InputAdornment from '@mui/material/InputAdornment';
 import see from '../../public/assets/images/eye.png';
 import nosee from '../../public/assets/images/eye-slash.png';
 import { ToastContainer, toast } from 'react-toastify';
+import { useAppContext } from '../context';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
+
 const Login = () => {
+	const { token, setToken } = useAppContext();
 	const [showPassword, setShowPassword] = useState(false);
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');
+	const router = useRouter();
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -26,16 +31,17 @@ const Login = () => {
 		e.preventDefault();
 		const pending = toast.loading('Authenticating');
 
-		const url = 'https://learnable-2024-group-8.onrender.com/';
+		const url = 'https://learnable-2024-group-8.onrender.com/api/auth/login';
 		try {
 			const response = await axios
 				.post(
 					url,
-					JSON.stringify({ email, password }),
+					JSON.stringify({ username, password }),
 
 					{
 						headers: {
 							'Content-Type': 'application/json',
+							Authorization: `Bearer ${token}`,
 						},
 						withCredentials: false,
 					}
@@ -48,8 +54,10 @@ const Login = () => {
 						isLoading: false,
 						autoClose: 3000,
 					});
-					setEmail('');
+					setUsername('');
 					setPassword('');
+					setToken(res.data.token);
+					router.push('/home');
 				});
 		} catch (error) {
 			console.log(error.message);
