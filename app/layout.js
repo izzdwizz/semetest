@@ -5,8 +5,8 @@ import { AppWrapper } from './context';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-	title: 'Dantow',
-	description: 'Everything Bitcoin',
+	title: 'SeeMe',
+	description: 'Walkie Talkie Application',
 };
 
 export default function RootLayout({ children }) {
