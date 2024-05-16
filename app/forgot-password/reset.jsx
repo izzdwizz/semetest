@@ -16,9 +16,6 @@ import { useRouter } from 'next/navigation';
 import { useAppContext } from '../context';
 const Reset = () => {
 	const [showPassword, setShowPassword] = useState(false);
-	const [fullname, setFullname] = useState('');
-	const [email, setEmail] = useState('');
-	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmP, setConfirmP] = useState('');
 	const [error, setError] = useState('');
@@ -66,6 +63,7 @@ const Reset = () => {
 				.post(url, JSON.stringify({ password }), {
 					headers: {
 						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
 					},
 					withCredentials: false,
 				})

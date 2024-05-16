@@ -9,9 +9,11 @@ import InputAdornment from '@mui/material/InputAdornment';
 import mail from '../../public/assets/images/mail.png';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+import { useAppContext } from '../context';
 
 const Forgot = ({ setShowReset }) => {
 	const [email, setEmail] = useState('');
+	const { setToken } = useAppContext();
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const pending = toast.loading('Verifying');
@@ -47,7 +49,10 @@ const Forgot = ({ setShowReset }) => {
 						autoClose: 3000,
 					});
 					setEmail('');
-					setShowReset(false);
+					setToken(res.data.Token);
+					setTimeout(() => {
+						setShowReset(false);
+					}, 5000);
 				});
 		} catch (error) {
 			console.log(error.message);
@@ -59,8 +64,9 @@ const Forgot = ({ setShowReset }) => {
 			<ToastContainer />
 			<div className='w-full flex flex-col items-center justify-between'>
 				<h4 className='text-black text-4xl font-[700]'>Forgot Password?</h4>
-				<p className='text-black text-center text-lg font-[400] pt-6 w-[80%] text-[0.77rem]'>
-					Don't worry! These things happen. <br /> Please enter the email
+				<p className='text-black text-center text-lg font-[400] pt-6 w-[80%] text-[0.7rem]'>
+					Don't worry! These things happen. Please enter the email
+					<br />
 					address associated with your account.
 				</p>
 
