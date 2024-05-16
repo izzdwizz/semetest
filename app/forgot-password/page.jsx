@@ -7,7 +7,7 @@ import SignUp from './reset';
 import Login from './forgot';
 import Link from 'next/link';
 const page = () => {
-	const [showReset, setShowReset] = useState(false);
+	const [showReset, setShowReset] = useState(true);
 
 	return (
 		<div className='w-screen h-screen bg-[#280050ec]  flex  overflow-hidden'>
