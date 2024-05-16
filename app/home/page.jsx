@@ -27,10 +27,7 @@ export default function Home() {
 		try {
 			const response = await axios.get(url).then((res) => {
 				console.log(res);
-
-				if (res.status === 200) {
-					router.push('/');
-				}
+				router.push('/');
 			});
 
 			cookies.remove('jwt_token');
