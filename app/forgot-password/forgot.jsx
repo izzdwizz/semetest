@@ -52,7 +52,7 @@ const Forgot = ({ setShowReset }) => {
 					setToken(res.data.Token);
 					setTimeout(() => {
 						setShowReset(false);
-					}, 5000);
+					}, 4000);
 				});
 		} catch (error) {
 			console.log(error.message);

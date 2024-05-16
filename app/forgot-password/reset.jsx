@@ -149,7 +149,7 @@ const Reset = () => {
 								value={password}
 								onChange={(e) => setPassword(e.target.value)}
 							/>
-							<p className='text-black/70 text-left ml-1 text-lg font-[400] pt-0 w-[80%] text-[0.57rem]'>
+							<p className='text-black/70 text-left ml-1 text-lg font-[400] pt-0 w-[80%] text-[0.57rem !important]'>
 								{`	At least eight characters with at least a number(s) and
 								symbol(s)`}
 							</p>
