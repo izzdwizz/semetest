@@ -16,6 +16,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { useAppContext } from '../context';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
+import Link from 'next/link';
 
 const Login = () => {
 	const { token, setToken } = useAppContext();
@@ -130,6 +131,12 @@ const Login = () => {
 								onChange={(e) => setPassword(e.target.value)}
 							/>
 						</FormControl>
+						<Link
+							href='/forgot-password'
+							className='mt-1 w-full text-blue-500 ml-3 hover:underline duration-300 text-left text-[0.8rem] flex justify-start cursor-pointer '
+						>
+							Forgot Password?
+						</Link>
 					</div>
 				</Box>
 				<span className=' flex flex-col w-full items-center gap-3'>
