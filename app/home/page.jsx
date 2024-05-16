@@ -16,7 +16,7 @@ export default function Home() {
 		if (!token) {
 			setTimeout(() => {
 				router.push('/Onboarding');
-			}, 5000);
+			}, 1500);
 		}
 	}, [token]);
 
@@ -27,11 +27,11 @@ export default function Home() {
 		try {
 			const response = await axios.get(url).then((res) => {
 				console.log(res);
-				router.push('/');
 			});
 
 			cookies.remove('jwt_token');
 			setUser(null);
+			router.push('/Onboarding');
 		} catch (error) {
 			console.log(error.message);
 		}
