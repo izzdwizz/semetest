@@ -42,6 +42,7 @@ export function AppWrapper({ children }) {
 		try {
 			const nonce = await getNonce();
 			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			await provider.send('eth_requestAccounts', []);
 			const signer = provider.getSigner();
 			const address = await signer.getAddress();
 			const message = `This nonce is signed using metamask ${nonce}`;
@@ -65,7 +66,41 @@ export function AppWrapper({ children }) {
 
 			let metaToken = response.data;
 
-			console.log(metaToken);
+			setMetaToken(metaToken);
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	const loginMetamask = async () => {
+		try {
+			const nonce = await getNonce();
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			await provider.send('eth_requestAccounts', []);
+			const signer = provider.getSigner();
+			const address = await signer.getAddress();
+			const message = `This nonce is signed using metamask ${nonce}`;
+			const signedMessage = await signer.signMessage(message);
+			const data = { signedMessage, message, address };
+
+			setAddress(address);
+
+			const response = await axios.post(
+				'http://localhost:3000/login-with-metamask',
+				JSON.stringify(data),
+
+				{
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					withCredentials: false,
+				}
+			);
+
+			let metaToken = response.data;
+
+			setMetaToken(metaToken);
 		} catch (error) {
 			console.log(error);
 		}
@@ -90,6 +125,7 @@ export function AppWrapper({ children }) {
 				setToken,
 				setUser,
 				signMessage,
+				loginMetamask,
 			}}
 		>
 			{children}
