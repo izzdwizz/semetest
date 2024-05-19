@@ -16,7 +16,6 @@ import axios from 'axios';
 
 export default function Home() {
 	const { setUser, token, metaToken } = useAppContext();
-	const [searchTerm, setSearchTerm] = useState('');
 	const router = useRouter();
 	const findFriends = () => {
 		router.push('/find-friends');

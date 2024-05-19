@@ -16,6 +16,8 @@ import axios from 'axios';
 export default function FindFriends() {
 	const { setUser, token, metaToken } = useAppContext();
 	const [searchTerm, setSearchTerm] = useState('');
+	const [searching, setSearching] = useState(false);
+
 	const router = useRouter();
 
 	const cookies = new Cookies();
@@ -80,7 +82,7 @@ export default function FindFriends() {
 								placeholder='add friends'
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
-								className='bg-transparent text-[1.25rem] text-[#000]/80 font-[600] friend_input outline-none border-none mr-8 md:w-[20rem]'
+								className='bg-transparent text-[1.25rem] text-[#000]/80 font-[700] friend_input outline-none border-none mr-8 md:w-[20rem]'
 							/>
 						</div>
 						<Image
