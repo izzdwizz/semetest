@@ -16,7 +16,8 @@ import axios from 'axios';
 
 export default function Home() {
 	const { setUser, token, metaToken } = useAppContext();
-	const { friendlist } = useAppContext();
+	// const { friendlist } = useAppContext();
+	const friendlist = true;
 	const router = useRouter();
 	const findFriends = () => {
 		router.push('/find-friends');
@@ -67,7 +68,12 @@ export default function Home() {
 					<p className='text-white text-[1.8rem] font-[600] tracking-wider'>
 						Chukwu
 					</p>
-					<button className='px-[1rem] py-4 bg-transparent border-[0.5px] border-white text-[1.25rem] text-white rounded-[12px]'>{`Pin: 0123455`}</button>
+					<button
+						className='px-[1rem] py-4 bg-transparent border-[0.5px] border-white text-[1.25rem] text-white rounded-[12px]'
+						onClick={() => {
+							navigator.clipboard.writeText('0123455');
+						}}
+					>{`Pin: 0123455`}</button>
 				</div>
 				<div className='w-full flex flex-col items-end gap-4'>
 					<Image src={settings_icon} alt='seeMe search Icon' className='pb-4' />
@@ -83,7 +89,7 @@ export default function Home() {
 			<section className='w-full md:px-24 bg-white h-screen  rounded-t-[5rem] text-6xl relative mt-8 overflow-y-hidden'>
 				<div className='w-full flex justify-center mt-9'>
 					<div
-						className='bg-[#BFBFBF]/50 rounded-[12px] py-4 px-8 flex items-center mt-4 justify-between relative cursor-pointer'
+						className='bg-[#BFBFBF]/50 rounded-[12px] py-5 px-8 flex items-center mt-4 justify-between relative cursor-pointer'
 						onClick={findFriends}
 					>
 						<div className='w-full flex items-center '>
@@ -92,13 +98,13 @@ export default function Home() {
 								alt='search friend'
 								className='mr-8 md:w-[45px] md:h-[45px]'
 							/>
-							<p className='bg-transparent text-[1.25rem] text-[#6B6B6B] font-[600] friend_input outline-none border-none mr-8 md:w-[20rem]'>
+							<p className='bg-transparent text-[1.25rem] text-[#6B6B6B] font-[600] friend_input outline-none border-none mr-8 md:w-[50rem]'>
 								{' '}
 								add friends
 							</p>
 						</div>
 
-						<span className=' w-full flex-col md:absolute md:left-[86%] '>
+						<span className='  flex-col md:absolute md:left-[90%] md:-bottom-[2.2rem]'>
 							<Image
 								src={girl}
 								alt='user icon'
@@ -117,20 +123,22 @@ export default function Home() {
 						<p className='text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
 					</div>
 				) : (
-					<div className='mt-[6rem] w-full flex justify-between items-center'>
-						<div className='w-full flex gap-7 items-center'>
-							<Image
-								src={avatar}
-								alt='user icon'
-								className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
-							/>
+					<div className='mt-[6rem] w-full flex justify-between items-center md:px-[11.5rem]'>
+						<div className='w-full flex items-center'>
+							<div className='w-full flex gap-7 items-center'>
+								<Image
+									src={avatar}
+									alt='user icon'
+									className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
+								/>
 
-							<p className='text-[2.75rem] font-[400]'>Jay</p>
+								<p className='text-[2.75rem] font-[400]'>Jay</p>
+							</div>
+
+							<p className='w-full flex justify-end text-[2.75rem] font-[600] cursor-pointer hover:text-[3rem] duration-300 ease-in-out'>
+								...
+							</p>
 						</div>
-
-						<p className='w-full flex justify-end text-[2.75rem] font-[600]'>
-							...
-						</p>
 					</div>
 				)}
 			</section>
