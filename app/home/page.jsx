@@ -16,6 +16,7 @@ import axios from 'axios';
 
 export default function Home() {
 	const { setUser, token, metaToken } = useAppContext();
+	const { friendlist } = useAppContext();
 	const router = useRouter();
 	const findFriends = () => {
 		router.push('/find-friends');
@@ -111,10 +112,27 @@ export default function Home() {
 						</span>
 					</div>
 				</div>
+				{!friendlist ? (
+					<div className='mt-[8rem] w-full flex justify-center'>
+						<p className='text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
+					</div>
+				) : (
+					<div className='mt-[6rem] w-full flex justify-between items-center'>
+						<div className='w-full flex gap-7 items-center'>
+							<Image
+								src={avatar}
+								alt='user icon'
+								className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
+							/>
 
-				<div className='mt-[8rem] w-full flex justify-center'>
-					<p className='text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
-				</div>
+							<p className='text-[2.75rem] font-[400]'>Jay</p>
+						</div>
+
+						<p className='w-full flex justify-end text-[2.75rem] font-[600]'>
+							...
+						</p>
+					</div>
+				)}
 			</section>
 		</main>
 	);

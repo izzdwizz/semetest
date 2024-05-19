@@ -15,6 +15,7 @@ export function AppWrapper({ children }) {
 	const [metaToken, setMetaToken] = useState(null);
 	const [user, setUser] = useState(null);
 	const [address, setAddress] = useState(null);
+	const [friendlist, setFriendlist] = useState(null);
 
 	cookies.set('jwt_token', token);
 	cookies.set('meta_token', metaToken);
@@ -130,6 +131,7 @@ export function AppWrapper({ children }) {
 				metaToken,
 				setAddress,
 				getNonce,
+				friendlist,
 			}}
 		>
 			{children}

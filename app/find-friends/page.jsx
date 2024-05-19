@@ -4,23 +4,26 @@ import home_bg from '../../public/assets/images/home_bg.png';
 import Cookies from 'universal-cookie';
 import { useAppContext } from '../context';
 import { useState, useEffect } from 'react';
-import search_icon from '../../public/assets/images/seemesearch.png';
-import logo_icon from '../../public/assets/images/seemelogo.png';
-import settings_icon from '../../public/assets/images/seemesettings.png';
 import avatar from '../../public/assets/images/Avatar1.png';
 import add_friend from '../../public/assets/images/add_friend.png';
 import { FaHashtag } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
 import { BsArrowRight } from 'react-icons/bs';
+import loader from '../../public/assets/images/Loading.png';
+import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 
 export default function FindFriends() {
 	const { setUser, token, metaToken } = useAppContext();
 	const [searchTerm, setSearchTerm] = useState('');
+	const [btn, setBtn] = useState(false);
 	const [searching, setSearching] = useState(false);
 
 	const router = useRouter();
-
+	const toggleSearch = () => {
+		setSearching(!searching);
+		setTimeout(() => setBtn(!btn), 4000);
+	};
 	const cookies = new Cookies();
 	// SIgnout function
 	const HandleSignOut = async () => {
@@ -37,6 +40,33 @@ export default function FindFriends() {
 			console.log(error.message);
 		}
 	};
+
+	const handleAdd = async () => {
+		const pending = toast.loading('Adding Friend');
+
+		const url = 'https://learnable-2024-group-8.onrender.com/logout';
+		try {
+			const response = await axios.get(url).then((res) => {
+				console.log(res);
+			});
+
+			cookies.remove('jwt_token');
+			toast.update(pending, {
+				render: 'Successful Login',
+				type: 'success',
+				isLoading: false,
+				autoClose: 1500,
+			});
+			router.push('/home');
+		} catch (error) {
+			toast.update(pending, {
+				render: error,
+				type: 'error',
+				isLoading: false,
+				autoClose: 1500,
+			});
+		}
+	};
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-start  overflow-y-hidden '>
 			<Image
@@ -47,6 +77,7 @@ export default function FindFriends() {
 				className='w-full bg-repeat-y relative z-0'
 			/>
 
+			<ToastContainer />
 			<div className='w-full px-24 pt-16 flex justify-between relative'>
 				<div className='w-full flex flex-col items-start gap-4'></div>
 
@@ -82,11 +113,21 @@ export default function FindFriends() {
 								className='bg-transparent text-[1.25rem] text-[#000]/80 font-[700] friend_input outline-none border-none mr-8 md:w-[40rem]'
 							/>
 						</div>
-						<Image
-							src={add_friend}
-							alt='Add friend'
-							className='mr-8 md:w-[35px] md:h-[35px] cursor-pointer hover:rotate-90 duration-300 ease-in'
-						/>
+						{!searching ? (
+							<Image
+								src={add_friend}
+								alt='Add friend'
+								className='mr-8 md:w-[35px] md:h-[35px] cursor-pointer hover:rotate-90 duration-300 ease-in'
+								onClick={toggleSearch}
+							/>
+						) : (
+							// <Spinner />
+							<Image
+								src={loader}
+								alt='loader'
+								className='animate-spin relative md:w-[35px] md:h-[35px] mr-8'
+							/>
+						)}
 					</div>
 				</div>
 				<div className='mt-[6rem] w-full flex justify-between items-center'>
@@ -105,7 +146,12 @@ export default function FindFriends() {
 					</p>
 				</div>
 				<div
-					className={`p-4 fixed bg-[#4F0797] w-fit bottom-8 right-24 rounded-[15px] cursor-pointer hover:scale-110 duration-500 ease-in-out`}
+					className={`p-4 fixed ${
+						btn
+							? 'bg-[#4F0797] cursor-pointer'
+							: 'bg-[#4F0797]/40 cursor-not-allowed'
+					} w-fit bottom-8 right-24 rounded-[15px]  hover:scale-110 duration-500 ease-in-out`}
+					onClick={handleAdd}
 				>
 					<BsArrowRight className='text-white' size={25} />
 				</div>
