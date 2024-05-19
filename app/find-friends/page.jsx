@@ -18,13 +18,11 @@ export default function FindFriends() {
 	const [searchTerm, setSearchTerm] = useState('');
 	const [btn, setBtn] = useState(false);
 	const [searching, setSearching] = useState(false);
+	const [foundUser, setFoundUser] = useState(null);
 
 	const router = useRouter();
-	const toggleSearch = () => {
-		setSearching(!searching);
-		setTimeout(() => setBtn(!btn), 4000);
-	};
 	const cookies = new Cookies();
+
 	// SIgnout function
 	const HandleSignOut = async () => {
 		const url = 'https://learnable-2024-group-8.onrender.com/logout';
@@ -41,10 +39,68 @@ export default function FindFriends() {
 		}
 	};
 
+	const toggleSearch = async () => {
+		setSearching(!searching);
+		setTimeout(() => {
+			setBtn(!btn);
+		}, 4000);
+
+		const url = 'http://localhost:3000/find-friend';
+		try {
+			const response = await axios
+				.post(
+					url,
+					JSON.stringify({ searchTerm }),
+
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${token}`,
+						},
+						withCredentials: false,
+					}
+				)
+				.then((res) => {
+					console.log(res);
+					setFoundUser(res);
+					setSearching(false);
+
+					// router.push('/home');
+				});
+		} catch (error) {
+			console.log(error.message);
+		}
+	};
+
+	const handleSearch = async () => {
+		const url = 'http://localhost:3000/find-friend';
+		try {
+			const response = await axios.post(url).then((res) => {
+				console.log(res);
+			});
+
+			cookies.remove('jwt_token');
+			toast.update(pending, {
+				render: 'Successful Login',
+				type: 'success',
+				isLoading: false,
+				autoClose: 1500,
+			});
+			router.push('/home');
+		} catch (error) {
+			toast.update(pending, {
+				render: error,
+				type: 'error',
+				isLoading: false,
+				autoClose: 1500,
+			});
+		}
+	};
+
 	const handleAdd = async () => {
 		const pending = toast.loading('Adding Friend');
 
-		const url = 'https://learnable-2024-group-8.onrender.com/logout';
+		const url = 'http://localhost:3000/find-friend';
 		try {
 			const response = await axios.get(url).then((res) => {
 				console.log(res);
@@ -130,21 +186,37 @@ export default function FindFriends() {
 						)}
 					</div>
 				</div>
-				<div className='mt-[6rem] w-full flex justify-between items-center'>
-					<div className='w-full flex gap-7 items-center'>
-						<Image
-							src={avatar}
-							alt='user icon'
-							className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
-						/>
 
-						<p className='text-[2.75rem] font-[400]'>Jay</p>
+				{foundUser?.data && (
+					<div className='mt-[6rem] w-full flex justify-between items-center'>
+						<div className='w-full flex gap-7 items-center'>
+							<div className='border-[#4F0797]/60 flex items-center justify-center'>
+								{!foundUser?.data?.profile_picture ? (
+									<p className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out flex items-center justify-center bg-[#BFBFBF]/50 '>
+										{foundUser?.data?.unique_wallet.split('').splice(0, 2)}
+									</p>
+								) : (
+									<Image
+										src={avatar}
+										alt='user icon'
+										className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
+									/>
+								)}
+							</div>
+
+							<p className='text-[2.75rem] font-[400]'>
+								{foundUser?.data?.username}
+							</p>
+						</div>
+
+						<p className='w-full flex justify-end text-[2.75rem] font-[600]'>
+							{foundUser?.data?.unique_wallet
+								? foundUser.data.unique_wallet
+								: foundUser?.data._id}
+						</p>
 					</div>
+				)}
 
-					<p className='w-full flex justify-end text-[2.75rem] font-[600]'>
-						4hgh3kd
-					</p>
-				</div>
 				<div
 					className={`p-4 fixed ${
 						btn

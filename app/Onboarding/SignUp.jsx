@@ -73,7 +73,8 @@ const SignUp = () => {
 			return;
 		}
 		e.preventDefault();
-		const url = 'https://learnable-2024-group-8.onrender.com/api/auth/signup';
+		// const url = 'https://learnable-2024-group-8.onrender.com/api/auth/signup';
+		const url = 'http://localhost:3000/api/auth/signup';
 
 		try {
 			const response = await axios

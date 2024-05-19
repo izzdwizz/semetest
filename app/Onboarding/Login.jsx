@@ -66,6 +66,12 @@ const Login = () => {
 				});
 		} catch (error) {
 			console.log(error.message);
+			toast.update(pending, {
+				render: error,
+				type: 'error',
+				isLoading: false,
+				autoClose: 3000,
+			});
 		}
 	};
 
