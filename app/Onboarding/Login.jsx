@@ -15,11 +15,13 @@ import nosee from '../../public/assets/images/eye-slash.png';
 import { ToastContainer, toast } from 'react-toastify';
 import { useAppContext } from '../context';
 import { useRouter } from 'next/navigation';
+import { ethers } from 'ethers';
 import axios from 'axios';
 import Link from 'next/link';
 
 const Login = () => {
-	const { token, setToken, signMessage } = useAppContext();
+	const { token, setToken, setAddress, setMetaToken, getNonce } =
+		useAppContext();
 	const [showPassword, setShowPassword] = useState(false);
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');
@@ -28,6 +30,8 @@ const Login = () => {
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
 	};
+
+	// Regular authentication
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const pending = toast.loading('Authenticating');
@@ -62,6 +66,51 @@ const Login = () => {
 				});
 		} catch (error) {
 			console.log(error.message);
+		}
+	};
+
+	// Authentication using metamask
+
+	const loginMetamask = async () => {
+		const pending = toast.loading('Authenticating Wallet');
+
+		try {
+			const nonce = await getNonce();
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			await provider.send('eth_requestAccounts', []);
+			const signer = provider.getSigner();
+			const address = await signer.getAddress();
+			const message = `This nonce is signed using metamask ${nonce}`;
+			const signedMessage = await signer.signMessage(message);
+			const data = { signedMessage, message, address };
+
+			setAddress(address);
+
+			const response = await axios.post(
+				'http://localhost:3000/login-with-metamask',
+				JSON.stringify(data),
+
+				{
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					withCredentials: false,
+				}
+			);
+
+			let metaToken = response.data;
+
+			setMetaToken(metaToken);
+			toast.update(pending, {
+				render: 'Successful Login',
+				type: 'success',
+				isLoading: false,
+				autoClose: 1500,
+			});
+			router.push('/home');
+		} catch (error) {
+			console.log(error);
 		}
 	};
 
@@ -159,12 +208,12 @@ const Login = () => {
 						</div>
 						<div
 							className='border-[1px] border-[#a2a2a2] rounded-md p-[0.33rem] group cursor-pointer'
-							onClick={signMessage}
+							onClick={loginMetamask}
 						>
 							<Image
 								src={appleicon}
 								alt='Apple Icon'
-								className='group-hover:scale-110 duration-500 ease-in-out'
+								className='group-hover:scale-110 duration-500 ease-in-out  md:w-[33px] md:h-[32px]'
 							/>
 						</div>
 					</div>

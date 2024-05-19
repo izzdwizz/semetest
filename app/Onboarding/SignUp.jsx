@@ -27,7 +27,7 @@ const SignUp = () => {
 	const [confirmP, setConfirmP] = useState('');
 	const [error, setError] = useState('');
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const { setToken, token, signMessage } = useAppContext();
+	const { setToken, signMessage } = useAppContext();
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -256,7 +256,7 @@ const SignUp = () => {
 							<Image
 								src={appleicon}
 								alt='Apple Icon'
-								className='group-hover:scale-110 duration-500 ease-in-out'
+								className='group-hover:scale-110 duration-500 ease-in-out object-contain md:w-[33px] md:h-[32px]'
 							/>
 						</div>
 					</div>
