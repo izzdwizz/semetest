@@ -123,8 +123,8 @@ export default function Home() {
 						<p className='text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
 					</div>
 				) : (
-					<div className='mt-[6rem] w-full flex justify-between items-center md:px-[11.5rem]'>
-						<div className='w-full flex items-center'>
+					<div className='mt-[6rem] w-full flex justify-between items-center md:px-[11.5rem] overflow-y-scroll'>
+						<div className='w-full flex items-center '>
 							<div className='w-full flex gap-7 items-center'>
 								<Image
 									src={avatar}
