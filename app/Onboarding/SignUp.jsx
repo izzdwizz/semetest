@@ -8,7 +8,7 @@ import FormControl from '@mui/material/FormControl';
 import { InputLabel, OutlinedInput, IconButton } from '@mui/material';
 import Image from 'next/image';
 import googleicon from '../../public/assets/images/googleicon.png';
-import appleicon from '../../public/assets/images/appleicon.png';
+import appleicon from '../../public/assets/images/meta1.png';
 import facebookicon from '../../public/assets/images/facebookicon.png';
 import InputAdornment from '@mui/material/InputAdornment';
 import see from '../../public/assets/images/eye.png';
@@ -27,7 +27,7 @@ const SignUp = () => {
 	const [confirmP, setConfirmP] = useState('');
 	const [error, setError] = useState('');
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const { setToken, token } = useAppContext();
+	const { setToken, token, signMessage } = useAppContext();
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -249,7 +249,10 @@ const SignUp = () => {
 								className='group-hover:scale-110 duration-500 ease-in-out'
 							/>
 						</div>
-						<div className='border-[1px] border-[#a2a2a2] rounded-md p-[0.33rem] group cursor-pointer'>
+						<div
+							className='border-[1px] border-[#a2a2a2] rounded-md p-[0.33rem] group cursor-pointer'
+							onClick={signMessage}
+						>
 							<Image
 								src={appleicon}
 								alt='Apple Icon'
