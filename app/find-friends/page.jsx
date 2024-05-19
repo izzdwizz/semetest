@@ -11,6 +11,7 @@ import avatar from '../../public/assets/images/Avatar1.png';
 import add_friend from '../../public/assets/images/add_friend.png';
 import { FaHashtag } from 'react-icons/fa6';
 import { useRouter } from 'next/navigation';
+import { BsArrowRight } from 'react-icons/bs';
 import axios from 'axios';
 
 export default function FindFriends() {
@@ -45,6 +46,7 @@ export default function FindFriends() {
 				priority
 				className='w-full bg-repeat-y relative z-0'
 			/>
+
 			<div className='w-full px-24 pt-16 flex justify-between relative'>
 				<div className='w-full flex flex-col items-start gap-4'></div>
 
@@ -68,32 +70,45 @@ export default function FindFriends() {
 			</div>
 
 			<section className='w-full md:px-24 bg-white h-screen  rounded-t-[5rem] text-6xl relative mt-8 '>
-				<div className='w-full flex justify-center mt-9'>
-					<div className='bg-[#BFBFBF]/50 rounded-[12px] py-5 px-8 flex items-center justify-between'>
+				<div className='w-full flex justify-center mt-12'>
+					<div className='bg-[#BFBFBF]/50 rounded-[15px] py-5 px-8 flex items-center justify-between'>
 						<div className='w-full flex items-center '>
-							{/* <Image
-								src={pound_icon}
-								alt='search friend'
-								className='mr-8 md:w-[45px] md:h-[45px]'
-							/> */}
 							<FaHashtag className='mr-8 md:w-[45px] md:h-[45px] text-[#6B6B6B]' />
 							<input
 								type='string'
 								placeholder='add friends'
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
-								className='bg-transparent text-[1.25rem] text-[#000]/80 font-[700] friend_input outline-none border-none mr-8 md:w-[20rem]'
+								className='bg-transparent text-[1.25rem] text-[#000]/80 font-[700] friend_input outline-none border-none mr-8 md:w-[40rem]'
 							/>
 						</div>
 						<Image
 							src={add_friend}
 							alt='Add friend'
-							className='mr-8 md:w-[35px] md:h-[35px] cursor-pointer'
+							className='mr-8 md:w-[35px] md:h-[35px] cursor-pointer hover:rotate-90 duration-300 ease-in'
 						/>
 					</div>
 				</div>
+				<div className='mt-[6rem] w-full flex justify-between items-center'>
+					<div className='w-full flex gap-7 items-center'>
+						<Image
+							src={avatar}
+							alt='user icon'
+							className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
+						/>
 
-				<div></div>
+						<p className='text-[2.75rem] font-[400]'>Jay</p>
+					</div>
+
+					<p className='w-full flex justify-end text-[2.75rem] font-[600]'>
+						4hgh3kd
+					</p>
+				</div>
+				<div
+					className={`p-4 fixed bg-[#4F0797] w-fit bottom-8 right-24 rounded-[15px] cursor-pointer hover:scale-110 duration-500 ease-in-out`}
+				>
+					<BsArrowRight className='text-white' size={25} />
+				</div>
 			</section>
 		</main>
 	);
