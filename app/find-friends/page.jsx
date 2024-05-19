@@ -209,7 +209,7 @@ export default function FindFriends() {
 							</p>
 						</div>
 
-						<p className='w-full flex justify-end text-[2.75rem] font-[600]'>
+						<p className='w-full flex justify-end text-[1.75rem] font-[600]'>
 							{foundUser?.data?.unique_wallet
 								? foundUser.data.unique_wallet
 								: foundUser?.data._id}
