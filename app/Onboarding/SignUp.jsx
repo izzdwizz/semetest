@@ -16,7 +16,8 @@ import nosee from '../../public/assets/images/eye-slash.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
-import { useRouter, redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { ethers } from 'ethers';
 import { useAppContext } from '../context';
 const SignUp = () => {
 	const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +28,7 @@ const SignUp = () => {
 	const [confirmP, setConfirmP] = useState('');
 	const [error, setError] = useState('');
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const { setToken, signMessage } = useAppContext();
+	const { setToken, setMetaToken, setAddress, getNonce } = useAppContext();
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -35,7 +36,7 @@ const SignUp = () => {
 
 	const router = useRouter();
 
-	// SignUp function
+	// Regular SignUp function
 
 	const handleSubmit = async (e) => {
 		const pending = toast.loading('Authenticating');
@@ -108,6 +109,51 @@ const SignUp = () => {
 				isLoading: false,
 				autoClose: 3000,
 			});
+		}
+	};
+
+	// Authentication using Metamask
+
+	const signMessage = async () => {
+		const pending = toast.loading('Authenticating Wallet Details');
+
+		try {
+			const nonce = await getNonce();
+			const provider = new ethers.providers.Web3Provider(window.ethereum);
+			await provider.send('eth_requestAccounts', []);
+			const signer = provider.getSigner();
+			const address = await signer.getAddress();
+			const message = `This nonce is signed using metamask ${nonce}`;
+			const signedMessage = await signer.signMessage(message);
+			const data = { signedMessage, message, address };
+
+			setAddress(address);
+
+			const response = await axios.post(
+				'http://localhost:3000/signup-with-metamask',
+				JSON.stringify(data),
+
+				{
+					headers: {
+						Accept: 'application/json',
+						'Content-Type': 'application/json',
+					},
+					withCredentials: false,
+				}
+			);
+
+			let metaToken = response.data;
+
+			setMetaToken(metaToken);
+			toast.update(pending, {
+				render: 'Successful Login',
+				type: 'success',
+				isLoading: false,
+				autoClose: 1500,
+			});
+			router.push('/home');
+		} catch (error) {
+			console.log(error);
 		}
 	};
 	return (

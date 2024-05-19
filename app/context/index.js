@@ -127,6 +127,7 @@ export function AppWrapper({ children }) {
 				signMessage,
 				loginMetamask,
 				setMetaToken,
+				metaToken,
 				setAddress,
 				getNonce,
 			}}

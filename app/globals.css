@@ -37,6 +37,19 @@ body {
 	overflow-x: hidden;
 }
 
+.friend_input::placeholder {
+	color: #6b6b6b;
+	margin-left: 1rem;
+	font-weight: 600;
+}
+/* .home_bg {
+	background-image: url('../public/assets/images/home_bg.png');
+	background-size: cover;
+	background-repeat: repeat;
+	position: relative;
+	z-index: 1;
+} */
+
 /* Search BAR styling */
 .searchbar li {
 	list-style: none;
