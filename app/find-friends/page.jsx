@@ -69,6 +69,7 @@ export default function FindFriends() {
 				});
 		} catch (error) {
 			console.log(error.message);
+			setSearching(false);
 		}
 	};
 
@@ -173,7 +174,9 @@ export default function FindFriends() {
 							<Image
 								src={add_friend}
 								alt='Add friend'
-								className='mr-8 md:w-[35px] md:h-[35px] cursor-pointer hover:rotate-90 duration-300 ease-in'
+								className={`mr-8 md:w-[35px] md:h-[35px] ${
+									!searchTerm ? 'cursor-not-allowed' : 'cursor-pointer'
+								} hover:rotate-90 duration-300 ease-in`}
 								onClick={toggleSearch}
 							/>
 						) : (
@@ -192,7 +195,7 @@ export default function FindFriends() {
 						<div className='w-full flex gap-7 items-center'>
 							<div className='border-[#4F0797]/60 flex items-center justify-center'>
 								{!foundUser?.data?.profile_picture ? (
-									<p className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out flex items-center justify-center bg-[#BFBFBF]/50 '>
+									<p className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50  md:bg-[#4F0797]/60'>
 										{foundUser?.data?.unique_wallet.split('').splice(0, 2)}
 									</p>
 								) : (
