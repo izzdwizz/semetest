@@ -13,7 +13,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-	const [userId, setUser_id] = useState(
+	const [userId, setUserId] = useState(
 		() => localStorage.getItem('userId') || null
 	);
 	const [user, setUser] = useState(() => {
@@ -24,7 +24,7 @@ export default function Home() {
 		() => localStorage.getItem('address') || null
 	);
 	const [friendlist, setFriendlist] = useState(null);
-
+	const [toggleOption, setToggleOption] = useState(false);
 	useEffect(() => {
 		if (address) {
 			localStorage.setItem('address', address);
@@ -34,8 +34,8 @@ export default function Home() {
 
 		if (user) {
 			localStorage.setItem('user', JSON.stringify(user));
-			setUser_id(user._id);
-			setTimeout(() => fetchFriends(), 6000);
+			setUserId(user._id);
+			setTimeout(() => fetchFriends(user._id), 2500);
 		} else {
 			localStorage.removeItem('user');
 		}
@@ -47,29 +47,51 @@ export default function Home() {
 		}
 	}, [address, user]);
 
-	const fetchFriends = async () => {
+	// const fetchFriends = async () => {
+	// 	const url = 'http://localhost:3000/fetch-friends';
+	// 	try {
+	// 		const response = await axios
+	// 			.post(
+	// 				url,
+	// 				JSON.stringify({ userId }),
+
+	// 				{
+	// 					headers: {
+	// 						'Content-Type': 'application/json',
+	// 						// Authorization: `Bearer ${token}`,
+	// 					},
+	// 					withCredentials: false,
+	// 				}
+	// 			)
+	// 			.then((res) => {
+	// 				console.log(res);
+	// 				setFriendlist(res);
+	// 			});
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
+
+	const fetchFriends = async (userId) => {
+		if (!userId) return;
+
 		const url = 'http://localhost:3000/fetch-friends';
 		try {
-			const response = await axios
-				.post(
-					url,
-					JSON.stringify({ userId }),
-
-					{
-						headers: {
-							'Content-Type': 'application/json',
-							// Authorization: `Bearer ${token}`,
-						},
-						withCredentials: false,
-					}
-				)
-				.then((res) => {
-					console.log(res);
-					setFriendlist(res);
-				});
+			const response = await axios.post(url, JSON.stringify({ userId }), {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				withCredentials: false,
+			});
+			console.log(response);
+			setFriendlist(response.data); // Ensure correct data property
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const toggleCallOption = () => {
+		setToggleOption(!toggleOption);
 	};
 	// Use Effect for Fetching all friends
 
@@ -97,14 +119,13 @@ export default function Home() {
 			/>
 			<div className='w-full px-24 pt-16 flex justify-between relative'>
 				<div className='w-full flex flex-col items-start gap-4'>
-					{/* <Image src={search_icon} alt='seeMe search Icon' /> */}
 					<Image
 						src={logo_icon}
 						alt='seeMe search Icon'
 						className='md:w-[5rem] md:h-[5rem]'
 					/>
 
-					<p className='text-white text-[1.8rem] font-[600] tracking-wider'>
+					<p className='text-white text-[1.8rem] font-[600] tracking-wider capitalize'>
 						{user ? user?.username : 'Welcome '}
 					</p>
 					<button
@@ -125,7 +146,6 @@ export default function Home() {
 						src={avatar}
 						alt='user icon'
 						className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-white cursor-pointer hover:scale-110 duration-300 ease-in-out'
-						// onClick={fetchFriends}
 					/>
 				</div>
 			</div>
@@ -133,7 +153,7 @@ export default function Home() {
 			<section className='w-full md:px-24 bg-white h-screen  rounded-t-[5rem] text-6xl relative mt-8 overflow-y-hidden'>
 				<div className='w-full flex justify-center mt-9'>
 					<div
-						className='bg-[#BFBFBF]/50 rounded-[12px] py-5 px-8 flex items-center mt-4 justify-between relative cursor-pointer'
+						className='bg-[#BFBFBF]/50 rounded-[12px] py-5 px-8 flex items-center mt-4 justify-between relative cursor-pointer hover:scale-105 duration-500 ease-in-out'
 						onClick={() => findFriends()}
 					>
 						<div className='w-full flex items-center '>
@@ -165,38 +185,64 @@ export default function Home() {
 						</span>
 					</div>
 				</div>
-				{!friendlist ? (
+				{friendlist?.length == 0 ? (
 					<div className='mt-[8rem] w-full flex justify-center'>
 						<p className='text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
 					</div>
 				) : (
-					<div className='mt-[6rem] w-full flex justify-between items-center md:px-[11.5rem] overflow-y-scroll relative'>
-						<div className='w-full flex items-center '>
-							<div className='w-full flex gap-7 items-center'>
-								<Image
-									src={avatar}
-									alt='user icon'
-									className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
-								/>
-
-								<p className='text-[2.75rem] font-[400]'>Jay</p>
-							</div>
-
-							<p className=' flex justify-end text-[2.75rem] font-[600] cursor-pointer hover:text-[3rem] duration-300 ease-in-out'>
-								...
-							</p>
-
+					<div className='overflow-y-scroll w-full flex flex-col gap-8 md:mt-[6rem] justify-center'>
+						{friendlist?.map((friends, index) => (
 							<div
-								className={`flex absolute bg-white  flex-col gap-4 py-3 px-5 shadow-lg rounded-[15px] right-0 	`}
+								className=' w-full flex justify-between items-center md:px-[11.5rem] overflow-y-scroll relative'
+								onClick={toggleCallOption}
 							>
-								<span className='bg-transparent text-black/70 border-b pb-4 border-slate-600/20 text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'>
-									Video Call
-								</span>
-								<span className='bg-transparent text-black/70 text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'>
-									Voice Call
-								</span>
+								<div className='w-full flex items-center '>
+									<div className='w-full flex gap-7 items-center'>
+										<div className='border-[#4F0797]/60 flex items-center justify-center'>
+											{!friends?.profile_picture ? (
+												<p className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-90 duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50 capitalize  md:bg-[#4F0797]/60'>
+													{friends?.username
+														? friends.username.split('').splice(0, 1)
+														: friends.unique_wallet.split('').splice(0, 1)}
+												</p>
+											) : (
+												<Image
+													src={avatar}
+													alt='user icon'
+													className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
+												/>
+											)}
+										</div>
+
+										<p className='text-[2rem] font-[400] text-black/70 capitalize'>
+											{friends.username
+												? friends.username
+												: friends.unique_wallet}
+										</p>
+									</div>
+
+									<p
+										className=' flex justify-end text-[2.75rem] h-full font-[600] cursor-pointer hover:text-[3rem] duration-300 ease-in-out'
+										onClick={toggleCallOption}
+									>
+										...
+									</p>
+
+									{toggleOption && (
+										<div
+											className={`flex absolute bg-white/90   flex-col gap-4 py-3 px-5 shadow-lg rounded-[15px] right-3 	`}
+										>
+											<span className='bg-transparent text-black/70 border-b pb-4 border-slate-600/20 text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'>
+												Video Call
+											</span>
+											<span className='bg-transparent text-black/70 text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'>
+												Voice Call
+											</span>
+										</div>
+									)}
+								</div>
 							</div>
-						</div>
+						))}
 					</div>
 				)}
 			</section>
