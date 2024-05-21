@@ -28,7 +28,8 @@ const SignUp = () => {
 	const [confirmP, setConfirmP] = useState('');
 	const [error, setError] = useState('');
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
-	const { setToken, setMetaToken, setAddress, getNonce } = useAppContext();
+	const { setToken, setMetaToken, setAddress, getNonce, setUser, user } =
+		useAppContext();
 
 	const handleMouseDownPassword = (event) => {
 		event.preventDefault();
@@ -99,6 +100,7 @@ const SignUp = () => {
 					setUsername('');
 					setConfirmP('');
 					setToken(res.data.token);
+					setUser(res.data.user);
 					router.push('/home');
 				});
 		} catch (error) {
@@ -143,15 +145,17 @@ const SignUp = () => {
 				}
 			);
 
-			let metaToken = response.data;
+			let metaToken = response.data.token;
 
-			setMetaToken(metaToken);
+			setToken(metaToken);
+			setUser(response.json().data.user);
 			toast.update(pending, {
 				render: 'Successful Login',
 				type: 'success',
 				isLoading: false,
 				autoClose: 1500,
 			});
+
 			router.push('/home');
 		} catch (error) {
 			console.log(error);

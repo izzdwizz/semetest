@@ -20,8 +20,7 @@ import axios from 'axios';
 import Link from 'next/link';
 
 const Login = () => {
-	const { token, setToken, setAddress, setMetaToken, getNonce } =
-		useAppContext();
+	const { token, setToken, setAddress, getNonce, setUser } = useAppContext();
 	const [showPassword, setShowPassword] = useState(false);
 	const [password, setPassword] = useState('');
 	const [username, setUsername] = useState('');
@@ -105,16 +104,22 @@ const Login = () => {
 				}
 			);
 
-			let metaToken = response.data;
+			console.log(response);
+			let metaToken = response.data.token;
 
-			setMetaToken(metaToken);
-			toast.update(pending, {
-				render: 'Successful Login',
-				type: 'success',
-				isLoading: false,
-				autoClose: 1500,
-			});
-			router.push('/home');
+			setToken(metaToken);
+			setUser(response.data.user);
+
+			if (token) {
+				toast.update(pending, {
+					render: 'Successful Login',
+					type: 'success',
+					isLoading: false,
+					autoClose: 1500,
+				});
+
+				router.push('/home');
+			}
 		} catch (error) {
 			console.log(error);
 		}

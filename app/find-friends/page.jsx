@@ -14,31 +14,43 @@ import { toast, ToastContainer } from 'react-toastify';
 import axios from 'axios';
 
 export default function FindFriends() {
-	const { setUser, token, metaToken } = useAppContext();
+	const { token } = useAppContext();
 	const [searchTerm, setSearchTerm] = useState('');
 	const [btn, setBtn] = useState(false);
 	const [searching, setSearching] = useState(false);
 	const [foundUser, setFoundUser] = useState(null);
+	const [friendId, setFriendId] = useState(null);
+	const [friends_unique_wallet, setFriendUniqueWallet] = useState(null);
+	const [userId, setUser_id] = useState(null);
+	const [user, setUser] = useState(() => {
+		const user = localStorage.getItem('user');
+		return user ? JSON.parse(user) : null;
+	});
+	const [address, setAddress] = useState(
+		() => localStorage.getItem('address') || null
+	);
+
+	useEffect(() => {
+		if (address) {
+			localStorage.setItem('address', address);
+		} else {
+			localStorage.removeItem('address');
+		}
+
+		if (user) {
+			localStorage.setItem('user', JSON.stringify(user));
+			setUser_id(user._id);
+		} else {
+			localStorage.removeItem('user');
+		}
+	}, [address, user]);
+
+	console.log(userId, searchTerm);
 
 	const router = useRouter();
 	const cookies = new Cookies();
 
-	// SIgnout function
-	const HandleSignOut = async () => {
-		const url = 'https://learnable-2024-group-8.onrender.com/logout';
-		try {
-			const response = await axios.get(url).then((res) => {
-				console.log(res);
-			});
-
-			cookies.remove('jwt_token');
-			setUser(null);
-			router.push('/Onboarding');
-		} catch (error) {
-			console.log(error.message);
-		}
-	};
-
+	// Search Function
 	const toggleSearch = async () => {
 		setSearching(!searching);
 		setTimeout(() => {
@@ -63,6 +75,8 @@ export default function FindFriends() {
 				.then((res) => {
 					console.log(res);
 					setFoundUser(res);
+					setFriendId(res.data._id);
+					setFriendUniqueWallet(res.data.unique_wallet);
 					setSearching(false);
 
 					// router.push('/home');
@@ -73,43 +87,27 @@ export default function FindFriends() {
 		}
 	};
 
-	const handleSearch = async () => {
-		const url = 'http://localhost:3000/find-friend';
-		try {
-			const response = await axios.post(url).then((res) => {
-				console.log(res);
-			});
-
-			cookies.remove('jwt_token');
-			toast.update(pending, {
-				render: 'Successful Login',
-				type: 'success',
-				isLoading: false,
-				autoClose: 1500,
-			});
-			router.push('/home');
-		} catch (error) {
-			toast.update(pending, {
-				render: error,
-				type: 'error',
-				isLoading: false,
-				autoClose: 1500,
-			});
-		}
-	};
-
+	// Add Function
 	const handleAdd = async () => {
 		const pending = toast.loading('Adding Friend');
 
-		const url = 'http://localhost:3000/find-friend';
+		const url = 'http://localhost:3000/add-friend';
 		try {
-			const response = await axios.get(url).then((res) => {
-				console.log(res);
-			});
+			const response = await axios.post(
+				url,
+				JSON.stringify({ userId, searchTerm }),
 
-			cookies.remove('jwt_token');
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${token}`,
+					},
+					withCredentials: false,
+				}
+			);
+
 			toast.update(pending, {
-				render: 'Successful Login',
+				render: 'Successfully Added Friend',
 				type: 'success',
 				isLoading: false,
 				autoClose: 1500,
@@ -126,6 +124,8 @@ export default function FindFriends() {
 	};
 	return (
 		<main className='flex min-h-screen flex-col items-center justify-start  overflow-y-hidden '>
+			<ToastContainer className='relative' />
+
 			<Image
 				src={home_bg}
 				alt='home background'
@@ -134,7 +134,6 @@ export default function FindFriends() {
 				className='w-full bg-repeat-y relative z-0'
 			/>
 
-			<ToastContainer />
 			<div className='w-full px-24 pt-16 flex justify-between relative'>
 				<div className='w-full flex flex-col items-start gap-4'></div>
 
