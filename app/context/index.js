@@ -199,9 +199,9 @@ export function AppWrapper({ children }) {
 		console.log('User:', user);
 	}, [token, address, user]);
 
-	if (token) {
-		router.push('/home');
-	}
+	// if (token) {
+	// 	router.push('/home');
+	// }
 	return (
 		<AppContext.Provider
 			value={{
