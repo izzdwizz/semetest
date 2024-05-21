@@ -75,7 +75,7 @@ export default function Home() {
 	const fetchFriends = async (userId) => {
 		if (!userId) return;
 
-		const url = 'http://localhost:3000/fetch-friends';
+		const url = 'https://learnable-2024-group-8.onrender.com/fetch-friends';
 		try {
 			const response = await axios.post(url, JSON.stringify({ userId }), {
 				headers: {
