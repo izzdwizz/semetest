@@ -74,7 +74,7 @@ const SignUp = () => {
 			return;
 		}
 		e.preventDefault();
-		// const url = 'https://learnable-2024-group-8.onrender.com/api/auth/signup';
+
 		const url = 'https://learnable-2024-group-8.onrender.com/api/auth/signup';
 
 		try {
@@ -133,7 +133,6 @@ const SignUp = () => {
 			setAddress(address);
 
 			const response = await axios.post(
-				'https://learnable-2024-group-8.onrender.com/signup-with-metamask',
 				'https://learnable-2024-group-8.onrender.com/signup-with-metamask',
 				JSON.stringify(data),
 
