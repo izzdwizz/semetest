@@ -13,69 +13,54 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
-	const [userId, setUserId] = useState(
-		() => localStorage.getItem('userId') || null
-	);
-	const [user, setUser] = useState(() => {
-		const user = localStorage.getItem('user');
-		return user ? JSON.parse(user) : null;
+	const [userId, setUserId] = useState(() => {
+		if (typeof window !== 'undefined') {
+			return localStorage.getItem('userId') || null;
+		}
+		return null;
 	});
-	const [address, setAddress] = useState(
-		() => localStorage.getItem('address') || null
-	);
+	const [user, setUser] = useState(() => {
+		if (typeof window !== 'undefined') {
+			const user = localStorage.getItem('user');
+			return user ? JSON.parse(user) : null;
+		}
+		return null;
+	});
+	const [address, setAddress] = useState(() => {
+		if (typeof window !== 'undefined') {
+			return localStorage.getItem('address') || null;
+		}
+		return null;
+	});
 	const [friendlist, setFriendlist] = useState(null);
 	const [toggleOption, setToggleOption] = useState(false);
+
 	useEffect(() => {
-		if (address) {
+		if (address && typeof window !== 'undefined') {
 			localStorage.setItem('address', address);
-		} else {
+		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('address');
 		}
 
-		if (user) {
+		if (user && typeof window !== 'undefined') {
 			localStorage.setItem('user', JSON.stringify(user));
 			setUserId(user._id);
-			setTimeout(() => fetchFriends(user._id), 2500);
-		} else {
+			setTimeout(() => fetchFriends(user._id), 6000);
+		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('user');
 		}
 
-		if (userId) {
+		if (userId && typeof window !== 'undefined') {
 			localStorage.setItem('userId', userId);
-		} else {
+		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('userId');
 		}
 	}, [address, user]);
 
-	// const fetchFriends = async () => {
-	// 	const url = 'http://localhost:3000/fetch-friends';
-	// 	try {
-	// 		const response = await axios
-	// 			.post(
-	// 				url,
-	// 				JSON.stringify({ userId }),
-
-	// 				{
-	// 					headers: {
-	// 						'Content-Type': 'application/json',
-	// 						// Authorization: `Bearer ${token}`,
-	// 					},
-	// 					withCredentials: false,
-	// 				}
-	// 			)
-	// 			.then((res) => {
-	// 				console.log(res);
-	// 				setFriendlist(res);
-	// 			});
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
-
 	const fetchFriends = async (userId) => {
 		if (!userId) return;
 
-		const url = 'http://localhost:3000/fetch-friends';
+		const url = 'https://learnable-2024-group-8.onrender.com/fetch-friends';
 		try {
 			const response = await axios.post(url, JSON.stringify({ userId }), {
 				headers: {

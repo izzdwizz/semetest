@@ -21,26 +21,32 @@ export default function FindFriends() {
 	const [foundUser, setFoundUser] = useState(null);
 	const [friendId, setFriendId] = useState(null);
 	const [friends_unique_wallet, setFriendUniqueWallet] = useState(null);
-	const [userId, setUser_id] = useState(null);
+	const [userId, setUserId] = useState(null);
 	const [user, setUser] = useState(() => {
-		const user = localStorage.getItem('user');
-		return user ? JSON.parse(user) : null;
+		if (typeof window !== 'undefined') {
+			const user = localStorage.getItem('user');
+			return user ? JSON.parse(user) : null;
+		}
+		return null;
 	});
-	const [address, setAddress] = useState(
-		() => localStorage.getItem('address') || null
-	);
+	const [address, setAddress] = useState(() => {
+		if (typeof window !== 'undefined') {
+			return localStorage.getItem('address') || null;
+		}
+		return null;
+	});
 
 	useEffect(() => {
-		if (address) {
+		if (address && typeof window !== 'undefined') {
 			localStorage.setItem('address', address);
-		} else {
+		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('address');
 		}
 
-		if (user) {
+		if (user && typeof window !== 'undefined') {
 			localStorage.setItem('user', JSON.stringify(user));
-			setUser_id(user._id);
-		} else {
+			setUserId(user._id);
+		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('user');
 		}
 	}, [address, user]);
@@ -57,7 +63,7 @@ export default function FindFriends() {
 			setBtn(!btn);
 		}, 4000);
 
-		const url = 'http://localhost:3000/find-friend';
+		const url = 'https://learnable-2024-group-8.onrender.com/find-friend';
 		try {
 			const response = await axios
 				.post(
@@ -91,7 +97,7 @@ export default function FindFriends() {
 	const handleAdd = async () => {
 		const pending = toast.loading('Adding Friend');
 
-		const url = 'http://localhost:3000/add-friend';
+		const url = 'https://learnable-2024-group-8.onrender.com/add-friend';
 		try {
 			const response = await axios.post(
 				url,

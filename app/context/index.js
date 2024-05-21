@@ -39,7 +39,7 @@
 // 	const getNonce = async () => {
 // 		// fetch method
 
-// 		const response = await fetch('http://localhost:3000/nonce');
+// 		const response = await fetch('https://learnable-2024-group-8.onrender.com/nonce');
 // 		const data = await response.json();
 // 		return data.nonce;
 // 	};
@@ -92,36 +92,45 @@ export function AppWrapper({ children }) {
 	const url = 'https://learnable-2024-group-8.onrender.com/';
 	const router = useRouter();
 
-	const [token, setToken] = useState(
-		() => localStorage.getItem('jwt_token') || null
-	);
-	const [user, setUser] = useState(() => {
-		const user = localStorage.getItem('user');
-		return user ? JSON.parse(user) : null;
+	const [token, setToken] = useState(() => {
+		if (typeof window !== 'undefined') {
+			return localStorage.getItem('jwt_token') || null;
+		}
+		return null;
 	});
-	const [address, setAddress] = useState(
-		() => localStorage.getItem('address') || null
-	);
+	const [user, setUser] = useState(() => {
+		if (typeof window !== 'undefined') {
+			const user = localStorage.getItem('user');
+			return user ? JSON.parse(user) : null;
+		}
+		return null;
+	});
+	const [address, setAddress] = useState(() => {
+		if (typeof window !== 'undefined') {
+			return localStorage.getItem('address') || null;
+		}
+		return null;
+	});
 	const [friendlist, setFriendlist] = useState(null);
 
 	// Save values to localStorage when they change
 	useEffect(() => {
-		if (token) {
-			localStorage.setItem('jwt_token', token);
-		} else {
-			localStorage.removeItem('jwt_token');
-		}
-
-		if (address) {
+		if (address && typeof window !== 'undefined') {
 			localStorage.setItem('address', address);
-		} else {
+		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('address');
 		}
 
-		if (user) {
+		if (user && typeof window !== 'undefined') {
 			localStorage.setItem('user', JSON.stringify(user));
-		} else {
+		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('user');
+		}
+
+		if (token && typeof window !== 'undefined') {
+			localStorage.setItem('jwt_token', token);
+		} else if (typeof window !== 'undefined') {
+			localStorage.removeItem('jwt_token');
 		}
 	}, [token, address, user]);
 
@@ -144,7 +153,9 @@ export function AppWrapper({ children }) {
 	};
 
 	const getNonce = async () => {
-		const response = await fetch('http://localhost:3000/nonce');
+		const response = await fetch(
+			'https://learnable-2024-group-8.onrender.com/nonce'
+		);
 		const data = await response.json();
 		return data.nonce;
 	};
@@ -163,7 +174,7 @@ export function AppWrapper({ children }) {
 			setAddress(address);
 
 			const response = await axios.post(
-				'http://localhost:3000/signup-with-metamask',
+				'https://learnable-2024-group-8.onrender.com/signup-with-metamask',
 				JSON.stringify(data),
 				{
 					headers: {
