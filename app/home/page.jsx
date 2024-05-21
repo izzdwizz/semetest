@@ -116,7 +116,7 @@ export default function Home() {
 					<button
 						className='px-[1rem] py-4 bg-transparent border-[0.5px] border-white text-[1.25rem] text-white rounded-[12px]'
 						onClick={() => {
-							navigator.clipboard.writeText(user?._id);
+							navigator.clipboard.writeText(user?._id || address);
 						}}
 					>{`Pin: ${user?._id || address}`}</button>
 				</div>
@@ -170,7 +170,7 @@ export default function Home() {
 						</span>
 					</div>
 				</div>
-				{friendlist?.length == 0 ? (
+				{friendlist?.length === 0 ? (
 					<div className='mt-[8rem] w-full flex justify-center'>
 						<p className='text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
 					</div>
