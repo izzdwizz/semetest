@@ -134,6 +134,7 @@ const SignUp = () => {
 
 			const response = await axios.post(
 				'https://learnable-2024-group-8.onrender.com/signup-with-metamask',
+				'https://learnable-2024-group-8.onrender.com/signup-with-metamask',
 				JSON.stringify(data),
 
 				{
