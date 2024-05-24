@@ -75,7 +75,7 @@ const SignUp = () => {
 		}
 		e.preventDefault();
 
-		const url = 'http://localhost:3000/api/auth/signup';
+		const url = 'https://build-szn.onrender.com/api/auth/signup';
 
 		try {
 			const response = await axios
@@ -133,7 +133,7 @@ const SignUp = () => {
 			setAddress(address);
 
 			const response = await axios.post(
-				'http://localhost:3000/signup-with-metamask',
+				'https://build-szn.onrender.com/signup-with-metamask',
 				JSON.stringify(data),
 
 				{

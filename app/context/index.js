@@ -8,7 +8,7 @@
 // const AppContext = createContext();
 
 // export function AppWrapper({ children }) {
-// 	const url = 'http://localhost:3000/';
+// 	const url = 'https://build-szn.onrender.com/';
 // 	const router = useRouter();
 // 	const cookies = new Cookies();
 // 	const [token, setToken] = useState(null);
@@ -39,7 +39,7 @@
 // 	const getNonce = async () => {
 // 		// fetch method
 
-// 		const response = await fetch('http://localhost:3000/nonce');
+// 		const response = await fetch('https://build-szn.onrender.com/nonce');
 // 		const data = await response.json();
 // 		return data.nonce;
 // 	};
@@ -89,7 +89,7 @@ import axios from 'axios';
 const AppContext = createContext();
 
 export function AppWrapper({ children }) {
-	const url = 'http://localhost:3000/';
+	const url = 'https://build-szn.onrender.com/';
 	const router = useRouter();
 
 	const [token, setToken] = useState(() => {
@@ -153,7 +153,7 @@ export function AppWrapper({ children }) {
 	};
 
 	const getNonce = async () => {
-		const response = await fetch('http://localhost:3000/nonce');
+		const response = await fetch('https://build-szn.onrender.com/nonce');
 		const data = await response.json();
 		return data.nonce;
 	};
@@ -172,7 +172,7 @@ export function AppWrapper({ children }) {
 			setAddress(address);
 
 			const response = await axios.post(
-				'http://localhost:3000/signup-with-metamask',
+				'https://build-szn.onrender.com/signup-with-metamask',
 				JSON.stringify(data),
 				{
 					headers: {
