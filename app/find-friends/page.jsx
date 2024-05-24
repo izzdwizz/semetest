@@ -63,7 +63,7 @@ export default function FindFriends() {
 			setBtn(!btn);
 		}, 4000);
 
-		const url = 'https://learnable-2024-group-8.onrender.com/find-friend';
+		const url = 'http://localhost:3000/find-friend';
 		try {
 			const response = await axios
 				.post(
@@ -97,7 +97,7 @@ export default function FindFriends() {
 	const handleAdd = async () => {
 		const pending = toast.loading('Adding Friend');
 
-		const url = 'https://learnable-2024-group-8.onrender.com/add-friend';
+		const url = 'http://localhost:3000/add-friend';
 		try {
 			const response = await axios.post(
 				url,

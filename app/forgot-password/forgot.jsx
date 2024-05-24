@@ -26,7 +26,7 @@ const Forgot = ({ setShowReset }) => {
 			});
 			return;
 		}
-		const url = 'https://learnable-2024-group-8.onrender.com/forgot-password';
+		const url = 'http://localhost:3000/forgot-password';
 		try {
 			const response = await axios
 				.post(

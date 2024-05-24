@@ -8,7 +8,7 @@
 // const AppContext = createContext();
 
 // export function AppWrapper({ children }) {
-// 	const url = 'https://learnable-2024-group-8.onrender.com/';
+// 	const url = 'http://localhost:3000/';
 // 	const router = useRouter();
 // 	const cookies = new Cookies();
 // 	const [token, setToken] = useState(null);
@@ -39,7 +39,7 @@
 // 	const getNonce = async () => {
 // 		// fetch method
 
-// 		const response = await fetch('https://learnable-2024-group-8.onrender.com/nonce');
+// 		const response = await fetch('http://localhost:3000/nonce');
 // 		const data = await response.json();
 // 		return data.nonce;
 // 	};
@@ -89,7 +89,7 @@ import axios from 'axios';
 const AppContext = createContext();
 
 export function AppWrapper({ children }) {
-	const url = 'https://learnable-2024-group-8.onrender.com/';
+	const url = 'http://localhost:3000/';
 	const router = useRouter();
 
 	const [token, setToken] = useState(() => {
@@ -153,9 +153,7 @@ export function AppWrapper({ children }) {
 	};
 
 	const getNonce = async () => {
-		const response = await fetch(
-			'https://learnable-2024-group-8.onrender.com/nonce'
-		);
+		const response = await fetch('http://localhost:3000/nonce');
 		const data = await response.json();
 		return data.nonce;
 	};
@@ -174,7 +172,7 @@ export function AppWrapper({ children }) {
 			setAddress(address);
 
 			const response = await axios.post(
-				'https://learnable-2024-group-8.onrender.com/signup-with-metamask',
+				'http://localhost:3000/signup-with-metamask',
 				JSON.stringify(data),
 				{
 					headers: {

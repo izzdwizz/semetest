@@ -55,8 +55,7 @@ const Reset = () => {
 			return;
 		}
 		e.preventDefault();
-		const url =
-			'https://learnable-2024-group-8.onrender.com/api/auth/reset-password';
+		const url = 'http://localhost:3000/api/auth/reset-password';
 
 		try {
 			const response = await axios

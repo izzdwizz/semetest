@@ -122,6 +122,14 @@ const Login = () => {
 			}
 		} catch (error) {
 			console.log(error);
+			toast.update(pending, {
+				render: `Failed: ${error.response.data.error}`,
+				type: 'error',
+				isLoading: false,
+				autoClose: 1500,
+			});
+
+			setTimeout(() => router.push('/Onboarding'), 1200);
 		}
 	};
 
