@@ -75,7 +75,7 @@ const SignUp = () => {
 		}
 		e.preventDefault();
 
-		const url = 'https://build-szn.onrender.com/api/auth/signup';
+		const url = 'http://localhost:3000/api/auth/signup';
 
 		try {
 			const response = await axios
@@ -133,7 +133,7 @@ const SignUp = () => {
 			setAddress(address);
 
 			const response = await axios.post(
-				'https://build-szn.onrender.com/signup-with-metamask',
+				'http://localhost:3000/signup-with-metamask',
 				JSON.stringify(data),
 
 				{
@@ -148,7 +148,7 @@ const SignUp = () => {
 			let metaToken = response.data.token;
 
 			setToken(metaToken);
-			setUser(response.json().data.user);
+			setUser(response?.data?.user);
 			toast.update(pending, {
 				render: 'Successful Login',
 				type: 'success',

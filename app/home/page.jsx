@@ -12,6 +12,7 @@ import boy from '../../public/assets/images/boy.png';
 import Peer from 'peerjs';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
 import io from 'socket.io-client';
 
 export default function Home() {
@@ -63,7 +64,7 @@ export default function Home() {
 	const fetchFriends = async (userId) => {
 		if (!userId) return;
 
-		const url = 'https://build-szn.onrender.com/fetch-friends';
+		const url = 'http://localhost:3000/fetch-friends';
 		try {
 			const response = await axios.post(url, JSON.stringify({ userId }), {
 				headers: {
@@ -125,7 +126,7 @@ export default function Home() {
 		if (userId) {
 			const peer = new Peer(userId, {
 				host: 'localhost',
-				port: 1738,
+				port: 4404,
 				path: '/myapp',
 			});
 
@@ -208,50 +209,73 @@ export default function Home() {
 				priority
 				className='w-full bg-repeat-y relative z-0'
 			/>
-			<div className='w-full px-24 pt-16 flex justify-between relative'>
+			<div className='w-full px-12 md:px-24 pt-16 flex justify-between relative'>
 				<div className='w-full flex flex-col items-start gap-4'>
 					<Image
 						src={logo_icon}
 						alt='seeMe search Icon'
-						className='md:w-[5rem] md:h-[5rem]'
+						className='md:w-[5rem] md:h-[5rem] h-[2rem] w-[2rem]'
 					/>
 
-					<p className='text-white text-[1.8rem] font-[600] tracking-wider capitalize'>
+					<p className='text-white text-[1.3rem] md:text-[1.8rem] font-[600] tracking-wider capitalize'>
 						{user ? user?.username : 'Welcome '}
 					</p>
 					<button
-						className='px-[1rem] py-4 bg-transparent border-[0.5px] border-white text-[1.25rem] text-white rounded-[12px]'
+						className=' px-[0.66rem] md:px-[1rem] py-2 md:py-4 bg-transparent border-[0.5px] border-white text-[0.68rem] md:text-[1.25rem] text-left text-white rounded-[12px]'
 						onClick={() => {
 							navigator.clipboard.writeText(user?._id || address);
+							toast('Copied pin');
 						}}
-					>{`Pin: ${user?._id ? user._id : address}`}</button>
+					>{` ${
+						user?._id
+							? `Pin: ${user._id}`
+							: address?.length >= 8
+							? 'Click to copy pin'
+							: `Pin: ${address}`
+					}`}</button>
 				</div>
-				<div className='w-full flex flex-col items-end gap-4 '>
+				<div className=' w-[70%] md:w-full flex flex-col items-end gap-4 '>
 					<Image
 						src={settings_icon}
 						alt='seeMe search Icon'
-						className='pb-4 hover:animate-spin cursor-pointer'
+						className='pb-4 hover:animate-spin md:w-[60px] md:h-[76px] w-[3rem]  cursor-pointer'
 					/>
 
-					<Image
+					{/* <Image
 						src={avatar}
 						alt='user icon'
 						className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-white cursor-pointer hover:scale-110 duration-300 ease-in-out'
-					/>
+					/> */}
+
+					<div className='border-white/80 flex items-center justify-center'>
+						{!user?.profile_picture ? (
+							<p className='rounded-full  w-[3.88rem] h-[3.88rem] capitalize md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-white/90 cursor-pointer hover:scale-110 text-[1.8rem] md:text-[3rem] duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50  '>
+								{user?.username
+									? user.username.split('').splice(0, 1)
+									: user?.unique_wallet.split('').splice(0, 1)}
+							</p>
+						) : (
+							<Image
+								src={avatar}
+								alt='user icon'
+								className='rounded-full   w-[3.88rem] h-[3.88rem] md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
+							/>
+						)}
+					</div>
 				</div>
 			</div>
 
-			<section className='w-full md:px-24 bg-white h-screen  rounded-t-[5rem] text-6xl relative mt-8 overflow-y-hidden'>
+			<section className='w-full md:px-24 bg-white h-screen  rounded-t-[5rem] text-6xl relative mt-8 md:overflow-y-hidden'>
 				<div className='w-full flex justify-center mt-9'>
 					<div
-						className='bg-[#BFBFBF]/50 rounded-[12px] py-5 px-8 flex items-center mt-4 justify-between relative cursor-pointer hover:scale-105 duration-500 ease-in-out'
+						className='bg-[#BFBFBF]/50 rounded-[12px] py-5 px-8 md:h-full  flex items-center mt-4 justify-between relative cursor-pointer hover:scale-105 duration-500 ease-in-out'
 						onClick={() => findFriends()}
 					>
 						<div className='w-full flex items-center '>
 							<Image
 								src={add_friend}
 								alt='search friend'
-								className='mr-8 md:w-[45px] md:h-[45px]'
+								className='mr-8 md:w-[45px] md:h-[45px] w-[30px] h-[30px]'
 							/>
 							<p className='bg-transparent text-[1.25rem] text-[#6B6B6B] font-[600] friend_input outline-none border-none mr-8 md:w-[50rem]'>
 								{' '}
@@ -260,7 +284,7 @@ export default function Home() {
 						</div>
 
 						<span
-							className='  flex-col md:absolute md:left-[90%] md:-bottom-[2.2rem]'
+							className='  flex-col absolute left-[84%] md:left-[90%] -bottom-[2.2rem]'
 							onClick={findFriends}
 						>
 							<Image
@@ -277,21 +301,21 @@ export default function Home() {
 					</div>
 				</div>
 				{friendlist?.length === 0 ? (
-					<div className='mt-[8rem] w-full flex justify-center'>
-						<p className='text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
+					<div className='mt-[4rem] md:mt-[8rem] w-full flex justify-center'>
+						<p className='text-[0.78rem] md:text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
 					</div>
 				) : (
-					<div className='overflow-y-scroll w-full flex flex-col gap-8 md:mt-[6rem] justify-center'>
+					<div className='overflow-y-scroll w-full flex flex-col gap-4 md:gap-8 mt-[3.4rem] md:mt-[6rem] justify-center'>
 						{friendlist?.map((friends, index) => (
 							<div
-								className=' w-full flex justify-between items-center md:px-[11.5rem] overflow-y-scroll relative'
+								className=' w-full flex justify-between items-center px-12 md:px-[11.5rem] overflow-y-scroll relative'
 								onClick={toggleCallOption}
 							>
 								<div className='w-full flex items-center '>
-									<div className='w-full flex gap-7 items-center'>
+									<div className='w-full flex gap-3 md:gap-7 items-center'>
 										<div className='border-[#4F0797]/60 flex items-center justify-center'>
 											{!friends?.profile_picture ? (
-												<p className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-90 duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50 capitalize  md:bg-[#4F0797]/60'>
+												<p className='rounded-full w-[4rem] h-[4rem] md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-90 duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50 capitalize md:text-lg text-sm  md:bg-[#4F0797]/60'>
 													{friends?.username
 														? friends.username.split('').splice(0, 1)
 														: friends.unique_wallet.split('').splice(0, 1)}
@@ -305,7 +329,7 @@ export default function Home() {
 											)}
 										</div>
 
-										<p className='text-[2rem] font-[400] text-black/70 capitalize'>
+										<p className=' text-[1rem] md:text-[2rem] font-[400] text-black/70 capitalize'>
 											{friends.username
 												? friends.username
 												: friends.unique_wallet}
@@ -313,7 +337,7 @@ export default function Home() {
 									</div>
 
 									<p
-										className=' flex justify-end text-[2.75rem] h-full font-[600] cursor-pointer hover:text-[3rem] duration-300 ease-in-out'
+										className=' flex justify-end text-[2rem] md:text-[2.75rem] h-full font-[600] cursor-pointer md:hover:text-[3rem] hover:text-[2.75rem] duration-300 ease-in-out'
 										onClick={toggleCallOption}
 									>
 										...
@@ -324,7 +348,7 @@ export default function Home() {
 											className={`flex absolute bg-white/90   flex-col gap-4 py-3 px-5 shadow-lg rounded-[15px] right-3 	`}
 										>
 											<span
-												className='bg-transparent text-black/70 border-b pb-4 border-slate-600/20 text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'
+												className='bg-transparent text-black/70 border-b pb-4 border-slate-600/20 text-[0.88rem] md:text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'
 												onClick={() => {
 													setIsOpen(true);
 													console.log(friends._id);
@@ -336,7 +360,7 @@ export default function Home() {
 												Video Call
 											</span>
 											<span
-												className='bg-transparent text-black/70 text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'
+												className='bg-transparent text-black/70 text-[0.88rem] md:text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'
 												onClick={() => {
 													setIsOpen(true);
 													setTimeout(() => {
@@ -370,13 +394,14 @@ export default function Home() {
 								<video
 									autoPlay={true}
 									ref={remoteVideoRef}
-									className='bg-cyan-300/10 rounded-[2.75rem] md:w-[23rem] h-[10rem]  fixed top-20 left-14'
+									className='bg-cyan-300/10 rounded-[2.75rem] w-[14rem] md:w-[23rem] h-[10rem]  fixed top-20 left-14'
 								/>
 							</div>
 						</div>
 					</div>
 				</div>
 			)}
+			<ToastContainer />
 		</main>
 	);
 }

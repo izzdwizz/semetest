@@ -63,7 +63,7 @@ export default function FindFriends() {
 			setBtn(!btn);
 		}, 4000);
 
-		const url = 'https://build-szn.onrender.com/find-friend';
+		const url = 'http://localhost:3000/find-friend';
 		try {
 			const response = await axios
 				.post(
@@ -97,7 +97,7 @@ export default function FindFriends() {
 	const handleAdd = async () => {
 		const pending = toast.loading('Adding Friend');
 
-		const url = 'https://build-szn.onrender.com/add-friend';
+		const url = 'http://localhost:3000/add-friend';
 		try {
 			const response = await axios.post(
 				url,
@@ -121,7 +121,7 @@ export default function FindFriends() {
 			router.push('/home');
 		} catch (error) {
 			toast.update(pending, {
-				render: error,
+				render: 'Cannot find requested user',
 				type: 'error',
 				isLoading: false,
 				autoClose: 1500,
@@ -140,8 +140,8 @@ export default function FindFriends() {
 				className='w-full bg-repeat-y relative z-0'
 			/>
 
-			<div className='w-full px-24 pt-16 flex justify-between relative'>
-				<div className='w-full flex flex-col items-start gap-4'></div>
+			<div className='w-full px-12 md:px-24 pt-16 flex justify-between relative'>
+				<div className='w-full hidden md:flex flex-col items-start gap-4'></div>
 
 				<div className='w-full flex flex-col justify-center items-center gap-3'>
 					<h6 className='text-white text-[1rem] font-[400]'>
@@ -149,11 +149,10 @@ export default function FindFriends() {
 					</h6>
 
 					<p className='text-white text-[1rem] font-[600] text-center leading-8'>
-						ask your friend for their pin or wallet address and add them up
-						right away!
+						ask your friend for their pin and add them
 					</p>
 				</div>
-				<div className='w-full flex flex-col items-end gap-4'>
+				<div className='md:w-full hidden md:flex flex-col items-end gap-4'>
 					<Image
 						src={avatar}
 						alt='user icon'
@@ -162,24 +161,24 @@ export default function FindFriends() {
 				</div>
 			</div>
 
-			<section className='w-full md:px-24 bg-white h-screen  rounded-t-[5rem] text-6xl relative mt-8 '>
+			<section className='w-full px-12 md:px-24 bg-white h-screen  rounded-t-[5rem] text-6xl relative mt-8 '>
 				<div className='w-full flex justify-center mt-12'>
 					<div className='bg-[#BFBFBF]/50 rounded-[15px] py-5 px-8 flex items-center justify-between'>
 						<div className='w-full flex items-center '>
-							<FaHashtag className='mr-8 md:w-[45px] md:h-[45px] text-[#6B6B6B]' />
+							<FaHashtag className='mr-8  w-[25px] h-[25px] md:w-[45px] md:h-[45px] text-[#6B6B6B]' />
 							<input
 								type='string'
 								placeholder='add friends'
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
-								className='bg-transparent text-[1.25rem] text-[#000]/80 font-[700] friend_input outline-none border-none mr-8 md:w-[40rem]'
+								className='bg-transparent text-[0.99rem] md:text-[1.25rem] text-[#000]/80 font-[700] friend_input outline-none border-none mr-8 md:w-[40rem]'
 							/>
 						</div>
 						{!searching ? (
 							<Image
 								src={add_friend}
 								alt='Add friend'
-								className={`mr-8 md:w-[35px] md:h-[35px] ${
+								className={`md:mr-8 w-[25px] h-[25px] md:w-[35px] md:h-[35px] ${
 									!searchTerm ? 'cursor-not-allowed' : 'cursor-pointer'
 								} hover:rotate-90 duration-300 ease-in`}
 								onClick={toggleSearch}
@@ -189,35 +188,35 @@ export default function FindFriends() {
 							<Image
 								src={loader}
 								alt='loader'
-								className='animate-spin relative md:w-[35px] md:h-[35px] mr-8'
+								className='animate-spin relative w-[25px] h-[25px] md:w-[35px] md:h-[35px] md:mr-8'
 							/>
 						)}
 					</div>
 				</div>
 
 				{foundUser?.data && (
-					<div className='mt-[6rem] w-full flex justify-between items-center'>
-						<div className='w-full flex gap-7 items-center'>
+					<div className='mt-[3rem] md:mt-[6rem] w-full flex justify-between items-center'>
+						<div className='w-full flex gap-4 md:gap-7 items-center'>
 							<div className='border-[#4F0797]/60 flex items-center justify-center'>
 								{!foundUser?.data?.profile_picture ? (
-									<p className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50  md:bg-[#4F0797]/60'>
+									<p className='rounded-full  w-[3.88rem] h-[3.88rem] md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50  md:bg-[#4F0797]/60'>
 										{foundUser?.data?.unique_wallet.split('').splice(0, 2)}
 									</p>
 								) : (
 									<Image
 										src={avatar}
 										alt='user icon'
-										className='rounded-full md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
+										className='rounded-full   w-[3.88rem] h-[3.88rem] md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[#4F0797]/60 cursor-pointer hover:scale-110 duration-300 ease-in-out'
 									/>
 								)}
 							</div>
 
-							<p className='text-[2.75rem] font-[400]'>
+							<p className='md:text-[2.75rem] text-[1.97rem] font-[300] md:font-[400]'>
 								{foundUser?.data?.username}
 							</p>
 						</div>
 
-						<p className='w-full flex justify-end text-[1.75rem] font-[600]'>
+						<p className='w-full flex justify-end text-[1rem] md:text-[1.75rem] font-[500] md:font-[600]'>
 							{foundUser?.data?.unique_wallet
 								? foundUser.data.unique_wallet
 								: foundUser?.data._id}
@@ -230,7 +229,7 @@ export default function FindFriends() {
 						btn
 							? 'bg-[#4F0797] cursor-pointer'
 							: 'bg-[#4F0797]/40 cursor-not-allowed'
-					} w-fit bottom-8 right-24 rounded-[15px]  hover:scale-110 duration-500 ease-in-out`}
+					} w-fit bottom-8 md:right-24 right-12 rounded-[15px]  hover:scale-110 duration-500 ease-in-out`}
 					onClick={handleAdd}
 				>
 					<BsArrowRight className='text-white' size={25} />
