@@ -124,11 +124,7 @@ export default function Home() {
 
 	useEffect(() => {
 		if (userId) {
-			const peer = new Peer(userId, {
-				host: 'localhost',
-				port: 4404,
-				path: '/myapp',
-			});
+			const peer = new Peer(userId);
 
 			peer.on('open', (id) => {
 				setPeerId(id);
