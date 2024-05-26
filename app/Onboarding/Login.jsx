@@ -35,7 +35,7 @@ const Login = () => {
 		e.preventDefault();
 		const pending = toast.loading('Authenticating');
 
-		const url = 'https://learnable-2024-group-8.onrender.com/api/auth/login';
+		const url = 'https://build-szn.onrender.com/api/auth/login';
 		try {
 			const response = await axios
 				.post(
@@ -92,7 +92,7 @@ const Login = () => {
 			setAddress(address);
 
 			const response = await axios.post(
-				'https://learnable-2024-group-8.onrender.com/login-with-metamask',
+				'https://build-szn.onrender.com/login-with-metamask',
 				JSON.stringify(data),
 
 				{

@@ -64,7 +64,7 @@ export default function Home() {
 	const fetchFriends = async (userId) => {
 		if (!userId) return;
 
-		const url = 'http://localhost:3000/fetch-friends';
+		const url = 'https://build-szn.onrender.com/fetch-friends';
 		try {
 			const response = await axios.post(url, JSON.stringify({ userId }), {
 				headers: {

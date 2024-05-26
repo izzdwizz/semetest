@@ -26,7 +26,7 @@ const Forgot = ({ setShowReset }) => {
 			});
 			return;
 		}
-		const url = 'http://localhost:3000/forgot-password';
+		const url = 'https://build-szn.onrender.com/forgot-password';
 		try {
 			const response = await axios
 				.post(
