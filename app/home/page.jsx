@@ -1,7 +1,6 @@
 'use client';
 import Image from 'next/image';
 import home_bg from '../../public/assets/images/home_bg.png';
-import { useAppContext } from '../context';
 import { useState, useEffect, useRef } from 'react';
 import logo_icon from '../../public/assets/images/seemelogo.png';
 import settings_icon from '../../public/assets/images/seemesettings.png';
@@ -17,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import mute from '../../public/assets/images/Frame 207.png';
 import vid from '../../public/assets/images/Frame 1396.png';
 import end from '../../public/assets/images/Frame 212.png';
+import line from '../../public/assets/images/Line 14.png';
 import Link from 'next/link';
 
 export default function Home() {
@@ -86,6 +86,7 @@ export default function Home() {
 	const toggleCallOption = () => {
 		setToggleOption(!toggleOption);
 	};
+
 	// Use Effect for Fetching all friends
 
 	const router = useRouter();
@@ -93,7 +94,22 @@ export default function Home() {
 		router.push('/find-friends');
 	};
 
-	//
+	//SIGN OUT FEATURE
+	const signOut = async () => {
+		setUser(null);
+		setAddress(null);
+		setToken(null);
+		localStorage.removeItem('jwt_token');
+		localStorage.removeItem('address');
+		localStorage.removeItem('user');
+		try {
+			const response = await fetch(url + 'logout', { method: 'POST' })
+				.then((res) => res.json())
+				.then((result) => console.log(result));
+		} catch (error) {
+			console.error('Error signing out:', error);
+		}
+	};
 	//
 	//
 	// CALLING FEATUREEEEE
@@ -104,7 +120,7 @@ export default function Home() {
 	const [peerId, setPeerId] = useState('');
 	const [muted, setMuted] = useState(false);
 	const [vide, setVideo] = useState(false);
-
+	const [out, setOut] = useState(false);
 	const toggleView = () => {
 		setVideo(!vide);
 	};
@@ -112,7 +128,9 @@ export default function Home() {
 	const toggleMute = () => {
 		setMuted(!muted);
 	};
-
+	const toggleOut = () => {
+		setOut(!out);
+	};
 	useEffect(() => {
 		if (user && typeof window !== 'undefined') {
 			localStorage.setItem('user', JSON.stringify(user));
@@ -254,7 +272,10 @@ export default function Home() {
 
 					<div className='border-white/80 flex items-center justify-center'>
 						{!user?.profile_picture ? (
-							<p className='rounded-full  w-[3.88rem] h-[3.88rem] capitalize md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-white/90 cursor-pointer hover:scale-110 text-[1.8rem] md:text-[3rem] duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50  '>
+							<p
+								className='rounded-full  w-[3.88rem] h-[3.88rem] capitalize md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-white/90 cursor-pointer hover:scale-110 text-[1.8rem] md:text-[3rem] duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50  '
+								onClick={toggleOut}
+							>
 								{user?.username
 									? user.username.split('').splice(0, 1)
 									: user?.unique_wallet.split('').splice(0, 1)}
@@ -438,6 +459,36 @@ export default function Home() {
 					</div>
 				</div>
 			)}
+
+			<div
+				className={`w-full px-10 md:px-24 bg-white  rounded-t-[5rem] text-6xl mt-8 md:overflow-y-hidden shadow-xl ${
+					out
+						? 'fixed bottom-0 duration-500 ease-in-out'
+						: 'fixed bottom-[-100%] duration-500 ease-in-out'
+				}`}
+			>
+				<div className='flex w-full p-10 flex-col justify-center items-center gap-4'>
+					<Image
+						src={line}
+						alt='line icon'
+						className='cursor-pointer'
+						onClick={toggleOut}
+					/>
+					<button
+						className='py-4 px-8 rounded-[12px] bg-[#DA2828]/70 hover:bg-[#DA2828] text-[1rem] duration-200 text-white'
+						onClick={signOut}
+					>
+						Log Out
+					</button>
+
+					<p
+						className='text-black/70 hover:text-black duration-200 font-[200] text-[0.88rem] mt-4 cursor-pointer'
+						onClick={toggleOut}
+					>
+						Close
+					</p>
+				</div>
+			</div>
 			<ToastContainer />
 		</main>
 	);

@@ -26,6 +26,12 @@ const page = () => {
 			toast('Please be patient as updated links would be available in V2');
 		}, 1000);
 	};
+	const togglePremiumClick = () => {
+		setTimeout(() => {
+			// alert('Please be patient as updated links to be available on V2');
+			toast('We are excited to share this with you! Stay tuned for updates');
+		}, 1000);
+	};
 
 	const router = useRouter();
 
@@ -158,6 +164,25 @@ const page = () => {
 									style={{ color: 'red' }}
 								></i>
 								<b style={{ paddingLeft: '1rem' }}>Send Feedback</b>
+							</li>
+							<li>
+								<h2>...</h2>
+							</li>
+						</div>
+
+						<div
+							className='feedback'
+							onClick={() => {
+								togglePremiumClick();
+							}}
+						>
+							<li>
+								<i
+									className='fa fa-heart'
+									aria-hidden='true'
+									style={{ color: 'red' }}
+								></i>
+								<b style={{ paddingLeft: '1rem' }}>Pay for Premium</b>
 							</li>
 							<li>
 								<h2>...</h2>
