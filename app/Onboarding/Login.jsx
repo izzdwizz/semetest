@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
 import { InputLabel, OutlinedInput, IconButton } from '@mui/material';
+import logo_icon from '../../public/assets/images/seemelogo2.png';
 import Image from 'next/image';
 import googleicon from '../../public/assets/images/googleicon.png';
 import appleicon from '../../public/assets/images/meta1.png';
@@ -13,6 +14,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import see from '../../public/assets/images/eye.png';
 import nosee from '../../public/assets/images/eye-slash.png';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useAppContext } from '../context';
 import { useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
@@ -137,8 +139,13 @@ const Login = () => {
 		<>
 			<ToastContainer />
 			<div className='w-full flex flex-col items-center'>
-				<h4 className='text-black text-4xl font-[700]'>
-					Log Into Your Account
+				<Image
+					src={logo_icon}
+					alt='seeMe search Icon'
+					className='md:w-[5rem] md:h-[5rem] h-[4rem] object-contain md:hidden flex w-[2rem] relative'
+				/>
+				<h4 className='text-black md:text-4xl font-[700]'>
+					Log into Your Account
 				</h4>
 				<Box
 					component='form'
@@ -151,7 +158,7 @@ const Login = () => {
 					}}
 					noValidate
 					autoComplete='off'
-					className='w-full px-[6.7rem] py-7 text-black'
+					className='w-full md:px-[6.7rem] py-7 text-black'
 				>
 					<div className='flex flex-col w-full gap-2 px-6 font-[600] text-black'>
 						<TextField
@@ -162,7 +169,10 @@ const Login = () => {
 							value={username}
 							onChange={(e) => setUsername(e.target.value)}
 						/>
-						<FormControl sx={{ m: 1, width: '100%' }} variant='outlined'>
+						<FormControl
+							sx={{ m: 1, width: '100%', paddingBottom: '1rem' }}
+							variant='outlined'
+						>
 							<InputLabel htmlFor='outlined-adornment-password'>
 								Password
 							</InputLabel>
@@ -232,12 +242,12 @@ const Login = () => {
 							<Image
 								src={appleicon}
 								alt='Apple Icon'
-								className='group-hover:scale-110 duration-500 ease-in-out  md:w-[33px] md:h-[32px]'
+								className='group-hover:scale-110 duration-500 ease-in-out  w-[33px] h-[32px]'
 							/>
 						</div>
 					</div>
 				</span>
-				<span className=' flex flex-col w-full items-center gap-3 pl-[9rem] pr-[7rem] pt-8'>
+				<span className=' flex flex-col w-full items-center gap-3 md:pl-[9rem] md:pr-[7rem] pt-8'>
 					<button
 						className=' w-full py-[1rem] text-[1rem] text-white font-[600] bg-[#4F0797] rounded-[0.5rem] hover:bg-[#7544a5] duration-150 ease-linear'
 						onClick={handleSubmit}

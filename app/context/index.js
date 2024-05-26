@@ -89,7 +89,7 @@ import axios from 'axios';
 const AppContext = createContext();
 
 export function AppWrapper({ children }) {
-	const url = 'https://build-szn.onrender.com//';
+	const url = 'https://build-szn.onrender.com/';
 	const router = useRouter();
 
 	const [token, setToken] = useState(() => {
@@ -147,6 +147,7 @@ export function AppWrapper({ children }) {
 			localStorage.removeItem('jwt_token');
 			localStorage.removeItem('address');
 			localStorage.removeItem('user');
+			router.push('/Onboarding');
 		} catch (error) {
 			console.error('Error signing out:', error);
 		}

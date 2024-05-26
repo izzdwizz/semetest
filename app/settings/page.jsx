@@ -1,6 +1,9 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-
+import { useRouter } from 'next/navigation';
+import { TbLogout } from 'react-icons/tb';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const page = () => {
 	const [user, setUser] = useState(() => {
 		if (typeof window !== 'undefined') {
@@ -12,21 +15,59 @@ const page = () => {
 	useEffect(() => {
 		if (user && typeof window !== 'undefined') {
 			localStorage.setItem('user', JSON.stringify(user));
-
-			setTimeout(() => fetchFriends(user._id), 6000);
 		} else if (typeof window !== 'undefined') {
 			localStorage.removeItem('user');
 		}
 	}, [user]);
 
+	const toggleClick = () => {
+		setTimeout(() => {
+			// alert('Please be patient as updated links to be available on V2');
+			toast('Please be patient as updated links would be available in V2');
+		}, 1000);
+	};
+
+	const router = useRouter();
+
+	const signOut = async () => {
+		setUser(null);
+		setAddress(null);
+		setToken(null);
+		localStorage.removeItem('jwt_token');
+		localStorage.removeItem('address');
+		localStorage.removeItem('user');
+		try {
+			const response = await fetch(url + 'logout', { method: 'POST' })
+				.then((res) => res.json())
+				.then((result) => console.log(result));
+		} catch (error) {
+			console.error('Error signing out:', error);
+		}
+	};
+
 	return (
 		<div>
+			<ToastContainer />
 			<div className='bodies'>
 				<div className='purple'></div>
 
 				<div className='main_div'>
-					<div className='image'></div>
-					<div className='header'>
+					<div className='border-[purple] flex items-center justify-center'>
+						{!user?.profile_picture ? (
+							<p className='rounded-full  w-[3.88rem] h-[3.88rem] capitalize md:w-[9rem] md:h-[9rem] mt-4 border-[4px] object-contain border-[purple] cursor-pointer hover:scale-110 text-[1.8rem] md:text-[3rem] duration-300 ease-in-out flex items-center justify-center text-white bg-[#BFBFBF]/50  '>
+								{user?.username
+									? user.username.split('').splice(0, 1)
+									: user?.unique_wallet.split('').splice(0, 1)}
+							</p>
+						) : (
+							<Image
+								src={avatar}
+								alt='user icon'
+								className='rounded-full   w-[3.88rem] h-[3.88rem] md:w-[7rem] md:h-[7rem] border-[4px] object-contain border-[purple] cursor-pointer hover:scale-110 duration-300 ease-in-out'
+							/>
+						)}
+					</div>
+					<div className='header my-4'>
 						<h3>{user ? user?.username : 'Login to update profile'}</h3>
 					</div>
 
@@ -46,7 +87,12 @@ const page = () => {
 					</div>
 
 					<div className='second_div'>
-						<div className='edit_profile'>
+						<div
+							className='edit_profile'
+							onClick={() => {
+								toggleClick();
+							}}
+						>
 							<li>
 								<i
 									className='fa fa-pencil-square'
@@ -60,7 +106,12 @@ const page = () => {
 							</li>
 						</div>
 
-						<div className='star'>
+						<div
+							className='star'
+							onClick={() => {
+								toggleClick();
+							}}
+						>
 							<li>
 								{' '}
 								<i
@@ -75,7 +126,12 @@ const page = () => {
 							</li>
 						</div>
 
-						<div className='legal'>
+						<div
+							className='legal'
+							onClick={() => {
+								toggleClick();
+							}}
+						>
 							<li>
 								<i
 									className='fa fa-lock'
@@ -89,7 +145,12 @@ const page = () => {
 							</li>
 						</div>
 
-						<div className='feedback'>
+						<div
+							className='feedback'
+							onClick={() => {
+								toggleClick();
+							}}
+						>
 							<li>
 								<i
 									className='fa fa-heart'
@@ -104,11 +165,15 @@ const page = () => {
 						</div>
 					</div>
 
-					<div className='arrow'>
+					<div
+						className='arrow rounded-[15px] hover:scale-105 duration-500 ease-in-out'
+						onClick={() => {
+							router.push('/Onboarding');
+							signOut();
+						}}
+					>
 						<div>
-							<h1>
-								<i className='fa fa-arrow-right' aria-hidden='true'></i>
-							</h1>
+							<TbLogout className='text-white' size={25} />
 						</div>
 					</div>
 				</div>

@@ -22,7 +22,7 @@ const page = () => {
 				</h4>
 			</div>
 
-			<div className='flex flex-col rounded-tl-[5rem] rounded-bl-[5rem] bg-white p-10 md:w-full justify-center items-center'>
+			<div className='flex flex-col md:rounded-tl-[5rem] md:rounded-bl-[5rem] bg-white p-10 w-full justify-center items-center'>
 				{showLogin ? <Login /> : <SignUp />}
 
 				<p className='text-[0.8rem] w-full mt-4 text-black flex justify-center'>

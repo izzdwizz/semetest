@@ -13,12 +13,14 @@ import facebookicon from '../../public/assets/images/facebookicon.png';
 import InputAdornment from '@mui/material/InputAdornment';
 import see from '../../public/assets/images/eye.png';
 import nosee from '../../public/assets/images/eye-slash.png';
+import logo_icon from '../../public/assets/images/seemelogo2.png';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import { useAppContext } from '../context';
+
 const SignUp = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [fullname, setFullname] = useState('');
@@ -165,7 +167,12 @@ const SignUp = () => {
 		<>
 			<ToastContainer />
 			<div className='w-full flex flex-col items-center'>
-				<h4 className='text-black text-4xl font-[700]'>Create Account</h4>
+				<Image
+					src={logo_icon}
+					alt='seeMe search Icon'
+					className='md:w-[5rem] md:h-[5rem] h-[4rem] object-contain md:hidden flex w-[2rem] relative'
+				/>
+				<h4 className='text-black md:text-4xl font-[700]'>Create an Account</h4>
 				<Box
 					component='form'
 					sx={{
@@ -177,9 +184,9 @@ const SignUp = () => {
 					}}
 					noValidate
 					autoComplete='off'
-					className='w-full px-[6.7rem] py-7 text-black'
+					className='w-full md:px-[6.7rem] py-7 text-black'
 				>
-					<div className='flex flex-col w-full gap-2 px-6 font-[600] text-black'>
+					<div className='flex flex-col w-full gap-4 md:gap-2 px-6 font-[600] text-black'>
 						<TextField
 							required
 							id='outlined-full-name-input'
@@ -307,12 +314,12 @@ const SignUp = () => {
 							<Image
 								src={appleicon}
 								alt='Apple Icon'
-								className='group-hover:scale-110 duration-500 ease-in-out object-contain md:w-[33px] md:h-[32px]'
+								className='group-hover:scale-110 duration-500 ease-in-out object-contain w-[33px] h-[32px]'
 							/>
 						</div>
 					</div>
 				</span>
-				<span className=' flex flex-col w-full items-center gap-3 pl-[9rem] pr-[7rem] pt-8'>
+				<span className=' flex flex-col w-full items-center gap-3 md:pl-[9rem] md:pr-[7rem] pt-8'>
 					<button
 						className=' w-full py-[1rem] text-[1rem] text-white font-[600] bg-[#4F0797] rounded-[0.5rem] hover:bg-[#7544a5] duration-150 ease-linear'
 						onClick={handleSubmit}

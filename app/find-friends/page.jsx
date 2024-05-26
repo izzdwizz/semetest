@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation';
 import { BsArrowRight } from 'react-icons/bs';
 import loader from '../../public/assets/images/Loading.png';
 import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
 
 export default function FindFriends() {

@@ -278,7 +278,7 @@ font-family: 'Franklin Gothic Medium',
 	/* padding: 36px 56px; */
 	border-radius: none;
 	width: 100%;
-	z-index: 1000000;
+	z-index: 1000000 !important;
 }
 
 .modal-content h2 {
@@ -322,6 +322,24 @@ font-family: 'Franklin Gothic Medium',
 @media screen and (max-width: 768px) {
 	* {
 		overflow-x: hidden;
+	}
+
+	.css-1laqsz7-MuiInputAdornment-root {
+		display: -webkit-box;
+		overflow: initial;
+		display: -webkit-flex;
+		display: -ms-flexbox;
+		display: flex;
+		height: 3.01em;
+		margin-right: 1rem;
+		max-height: 2em;
+		-webkit-align-items: center;
+		-webkit-box-align: center;
+		-ms-flex-align: center;
+		align-items: center;
+		white-space: nowrap;
+		color: rgba(0, 0, 0, 0.54);
+		margin-left: 8px;
 	}
 
 	::-webkit-scrollbar {

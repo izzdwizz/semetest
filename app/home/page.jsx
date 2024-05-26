@@ -13,7 +13,11 @@ import Peer from 'peerjs';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { ToastContainer, toast } from 'react-toastify';
-import io from 'socket.io-client';
+import 'react-toastify/dist/ReactToastify.css';
+import mute from '../../public/assets/images/Frame 207.png';
+import vid from '../../public/assets/images/Frame 1396.png';
+import end from '../../public/assets/images/Frame 212.png';
+import Link from 'next/link';
 
 export default function Home() {
 	const [userId, setUserId] = useState(() => {
@@ -84,16 +88,11 @@ export default function Home() {
 	};
 	// Use Effect for Fetching all friends
 
-	// useEffect(() => {
-	// 	fetchFriends();
-	// }, []);
-
 	const router = useRouter();
 	const findFriends = () => {
 		router.push('/find-friends');
 	};
 
-	//
 	//
 	//
 	//
@@ -103,15 +102,16 @@ export default function Home() {
 	const currentUserVideoRef = useRef(null);
 	const peerInstance = useRef(null);
 	const [peerId, setPeerId] = useState('');
-	const [remotePeerIdValue, setRemotePeerIdValue] = useState('');
-	// const [userId, setUserId] = useState(null);
-	// const [user, setUser] = useState(() => {
-	// 	if (typeof window !== 'undefined') {
-	// 		const user = localStorage.getItem('user');
-	// 		return user ? JSON.parse(user) : null;
-	// 	}
-	// 	return null;
-	// });
+	const [muted, setMuted] = useState(false);
+	const [vide, setVideo] = useState(false);
+
+	const toggleView = () => {
+		setVideo(!vide);
+	};
+
+	const toggleMute = () => {
+		setMuted(!muted);
+	};
 
 	useEffect(() => {
 		if (user && typeof window !== 'undefined') {
@@ -140,7 +140,10 @@ export default function Home() {
 					setIsOpen(true);
 				}
 				navigator.mediaDevices
-					.getUserMedia({ video: true, audio: true })
+					.getUserMedia({
+						video: vide ? false : true,
+						audio: muted ? false : true,
+					})
 					.then((stream) => {
 						currentUserVideoRef.current.srcObject = stream;
 						currentUserVideoRef.current.play();
@@ -231,11 +234,13 @@ export default function Home() {
 					}`}</button>
 				</div>
 				<div className=' w-[70%] md:w-full flex flex-col items-end gap-4 '>
-					<Image
-						src={settings_icon}
-						alt='seeMe search Icon'
-						className='pb-4 hover:animate-spin md:w-[60px] md:h-[76px] w-[3rem]  cursor-pointer'
-					/>
+					<Link href='settings' className='w-full flex justify-end'>
+						<Image
+							src={settings_icon}
+							alt='seeMe search Icon'
+							className='pb-4 hover:animate-spin md:w-[60px] md:h-[76px] w-[3rem] md:mr-8  cursor-pointer'
+						/>
+					</Link>
 
 					{/* <Image
 						src={avatar}
@@ -390,8 +395,40 @@ export default function Home() {
 								<video
 									autoPlay={true}
 									ref={remoteVideoRef}
-									className='bg-cyan-300/10 rounded-[2.75rem] w-[14rem] md:w-[23rem] h-[10rem]  fixed top-20 left-14'
+									className='bg-cyan-300/20 rounded-none md:rounded-[2.75rem] w-[10rem] md:w-[23rem] h-[14rem]  fixed bottom-20 right-14 md:top-20 md:left-14'
 								/>
+							</div>
+
+							<div className='w-full rounded-md'>
+								<div className='bg-cyan-300/10 rounded-[1.5rem] md:py-2 w-full h-[5rem] flex gap-4 md:gap-2 justify-center  fixed bottom-32 '>
+									<Image
+										src={mute}
+										alt='mute icon'
+										className={`object-contain md:scale-100 scale-90 cursor-pointer ${
+											muted ? 'opacity-100' : 'opacity-50'
+										} hover:scale-110 duration-300 ease-in-out`}
+										onClick={toggleMute}
+									/>
+									<Image
+										src={vid}
+										alt='close video icon'
+										className='object-contain md:scale-100 scale-90 cursor-pointer hover:scale-110 duration-500 ease-in-out'
+										onClick={() => {
+											if (peerInstance) {
+												peerInstance?.current?.destroy();
+											}
+											setIsOpen(false);
+										}}
+									/>
+									<Image
+										src={end}
+										alt='end call icon'
+										className={`object-contain md:scale-100 scale-90 cursor-pointer ${
+											vide ? 'opacity-100' : 'opacity-50'
+										} hover:scale-110 duration-300 ease-in-out`}
+										onClick={toggleView}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
