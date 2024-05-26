@@ -124,7 +124,11 @@ export default function Home() {
 
 	useEffect(() => {
 		if (userId) {
-			const peer = new Peer(userId);
+			const peer = new Peer(userId, {
+				config: {
+					iceServers: [{ url: 'stun:stun.l.google.com:19302' }],
+				},
+			});
 
 			peer.on('open', (id) => {
 				setPeerId(id);
