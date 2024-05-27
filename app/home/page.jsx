@@ -413,7 +413,7 @@ export default function Home() {
 											<span
 												className='bg-transparent text-black/70 text-[0.88rem] md:text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'
 												onClick={() => {
-													setMuted(true);
+													setVideo(true);
 													setIsOpen(true);
 													setTimeout(() => {
 														call(friends?._id);
