@@ -96,6 +96,7 @@ export default function Home() {
 
 	//SIGN OUT FEATURE
 	const signOut = async () => {
+		router.push('/Onboarding');
 		setUser(null);
 		setAddress(null);
 		setToken(null);
@@ -121,6 +122,16 @@ export default function Home() {
 	const [muted, setMuted] = useState(false);
 	const [vide, setVideo] = useState(false);
 	const [out, setOut] = useState(false);
+	const [swap, setSwap] = useState(false);
+	const [controllers, setControllers] = useState(false);
+
+	const toggleSwap = () => {
+		setSwap(!swap);
+	};
+
+	const toggleController = () => {
+		setTimeout(() => setControllers(!swap), 1500);
+	};
 	const toggleView = () => {
 		setVideo(!vide);
 	};
@@ -230,7 +241,7 @@ export default function Home() {
 				priority
 				className='w-full bg-repeat-y relative z-0'
 			/>
-			<div className='w-full px-12 md:px-24 pt-16 flex justify-between relative'>
+			<div className='w-full px-5 md:px-24 pt-16 flex justify-between relative'>
 				<div className='w-full flex flex-col items-start gap-4'>
 					<Image
 						src={logo_icon}
@@ -242,7 +253,21 @@ export default function Home() {
 						{user ? user?.username : 'Welcome '}
 					</p>
 					<button
-						className=' px-[0.66rem] md:px-[1rem] py-2 md:py-4 bg-transparent border-[0.5px] border-white text-[0.68rem] md:text-[1.25rem] text-left text-white rounded-[12px]'
+						className=' hidden md:flex justify-start px-[0.66rem] md:px-[1rem] py-2 md:py-4 bg-transparent border-[0.5px] border-white text-[0.68rem] md:text-[1.25rem] text-left text-white rounded-[12px]'
+						onClick={() => {
+							navigator.clipboard.writeText(user?._id || address);
+							toast('Copied pin');
+						}}
+					>{` ${
+						user?._id
+							? `Pin: ${user._id}`
+							: address?.length >= 8
+							? 'Click to copy pin'
+							: `Pin: ${address}`
+					}`}</button>
+
+					<button
+						className='flex md:hidden justify-start px-[0.66rem] md:px-[1rem] py-2 md:py-4 bg-transparent border-[0.5px] border-white text-[0.68rem] md:text-[1.25rem] text-left text-white rounded-[12px]'
 						onClick={() => {
 							navigator.clipboard.writeText(user?._id || address);
 							toast('Copied pin');
@@ -331,7 +356,7 @@ export default function Home() {
 						<p className='text-[0.78rem] md:text-[1rem] italic text-black/70'>{`"You've not added any friends"`}</p>
 					</div>
 				) : (
-					<div className='overflow-y-scroll w-full flex flex-col gap-4 md:gap-8 mt-[3.4rem] md:mt-[6rem] justify-center'>
+					<div className='overflow-y-scroll w-full flex flex-col gap-8 mt-[3.4rem] md:mt-[6rem] justify-center'>
 						{friendlist?.map((friends, index) => (
 							<div
 								className=' w-full flex justify-between items-center px-12 md:px-[11.5rem] overflow-y-scroll relative'
@@ -388,6 +413,7 @@ export default function Home() {
 											<span
 												className='bg-transparent text-black/70 text-[0.88rem] md:text-[1rem] cursor-pointer hover:text-gray-500/40 duration-200'
 												onClick={() => {
+													setMuted(true);
 													setIsOpen(true);
 													setTimeout(() => {
 														call(friends?._id);
@@ -409,27 +435,29 @@ export default function Home() {
 				<div className='modal'>
 					<div className='overlay'></div>
 					<div className='modal-content w-full'>
-						<div className='bg-white rounded-md p-8'>
+						<div className='bg-white rounded-md p-0 md:p-8'>
 							<video
 								autoPlay
-								ref={currentUserVideoRef}
-								className='bg-black border-2 border-gray-600/40 h-[90vh] w-screen rounded-[2.75rem] relative object-cover'
+								ref={!swap ? remoteVideoRef : currentUserVideoRef}
+								className='bg-black border-2 border-gray-600/40 h-[90vh] w-screen rounded-none md:rounded-[2.75rem] relative object-cover cursor-pointer'
+								onClick={toggleSwap}
 							/>
 
 							<div className='bg-white rounded-md'>
 								<video
 									autoPlay={true}
-									ref={remoteVideoRef}
-									className='bg-cyan-300/20 rounded-none md:rounded-[2.75rem] w-[10rem] md:w-[23rem] h-[14rem]  fixed bottom-20 right-14 md:top-20 md:left-14'
+									ref={!swap ? currentUserVideoRef : remoteVideoRef}
+									className='bg-cyan-300/20 rounded-none md:rounded-[2.75rem] w-[8rem] md:w-[23rem] h-[11rem] cursor-pointer fixed bottom-20 right-14 md:top-20 md:left-14'
+									onClick={toggleSwap}
 								/>
 							</div>
 
 							<div className='w-full rounded-md'>
-								<div className='bg-cyan-300/10 rounded-[1.5rem] md:py-2 w-full h-[5rem] flex gap-4 md:gap-2 justify-center  fixed bottom-32 '>
+								<div className='bg-transparent rounded-[1.5rem] md:py-2 w-full h-[5rem] flex gap-4 md:gap-2 justify-center  fixed bottom-16 right-6 md:bottom-32 md:right-0 '>
 									<Image
 										src={mute}
 										alt='mute icon'
-										className={`object-contain md:scale-100 scale-90 cursor-pointer ${
+										className={`object-contain md:scale-100 scale-75 cursor-pointer ${
 											muted ? 'opacity-100' : 'opacity-50'
 										} hover:scale-110 duration-300 ease-in-out`}
 										onClick={toggleMute}
@@ -437,7 +465,7 @@ export default function Home() {
 									<Image
 										src={vid}
 										alt='close video icon'
-										className='object-contain md:scale-100 scale-90 cursor-pointer hover:scale-110 duration-500 ease-in-out'
+										className='object-contain md:scale-100 scale-75 cursor-pointer hover:scale-110 duration-500 ease-in-out'
 										onClick={() => {
 											if (peerInstance) {
 												peerInstance?.current?.destroy();
@@ -448,7 +476,7 @@ export default function Home() {
 									<Image
 										src={end}
 										alt='end call icon'
-										className={`object-contain md:scale-100 scale-90 cursor-pointer ${
+										className={`object-contain md:scale-100 scale-75 cursor-pointer ${
 											vide ? 'opacity-100' : 'opacity-50'
 										} hover:scale-110 duration-300 ease-in-out`}
 										onClick={toggleView}

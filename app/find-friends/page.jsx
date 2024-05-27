@@ -212,12 +212,12 @@ export default function FindFriends() {
 								)}
 							</div>
 
-							<p className='md:text-[2.75rem] text-[1.97rem] font-[300] md:font-[400]'>
+							<p className='md:text-[2.75rem] text-[0.78rem] font-[300] md:font-[400]'>
 								{foundUser?.data?.username}
 							</p>
 						</div>
 
-						<p className='w-full flex justify-end text-[1rem] md:text-[1.75rem] font-[500] md:font-[600]'>
+						<p className='w-full flex justify-end text-[0.78rem] md:text-[1.75rem] font-[500] md:font-[600]'>
 							{foundUser?.data?.unique_wallet
 								? foundUser.data.unique_wallet
 								: foundUser?.data._id}
