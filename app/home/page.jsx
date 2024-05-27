@@ -272,13 +272,9 @@ export default function Home() {
 							navigator.clipboard.writeText(user?._id || address);
 							toast('Copied pin');
 						}}
-					>{` ${
-						user?._id
-							? `Pin: ${user._id}`
-							: address?.length >= 8
-							? 'Click to copy pin'
-							: `Pin: ${address}`
-					}`}</button>
+					>
+						Click to copy pin
+					</button>
 				</div>
 				<div className=' w-[70%] md:w-full flex flex-col items-end gap-4 '>
 					<Link href='settings' className='w-full flex justify-end'>
@@ -453,7 +449,7 @@ export default function Home() {
 							</div>
 
 							<div className='w-full rounded-md'>
-								<div className='bg-transparent rounded-[1.5rem] md:py-2 w-full h-[5rem] flex gap-4 md:gap-2 justify-center  fixed bottom-16 right-6 md:bottom-32 md:right-0 '>
+								<div className='bg-transparent rounded-[1.5rem] md:py-2 w-full h-[5rem] flex gap-4 md:gap-2 justify-center  fixed bottom-5 right-3 md:bottom-32 md:right-0 '>
 									<Image
 										src={mute}
 										alt='mute icon'

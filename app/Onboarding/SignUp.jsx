@@ -163,6 +163,16 @@ const SignUp = () => {
 			console.log(error);
 		}
 	};
+
+	const Oauth = () => {
+		setTimeout(
+			() =>
+				toast(
+					'Due to errors encountered setting up console, this service is temporarily unavailable. Be patient as our team of developers work on it'
+				),
+			1200
+		);
+	};
 	return (
 		<>
 			<ToastContainer />
@@ -293,14 +303,20 @@ const SignUp = () => {
 					<p className='text-black text-[0.8rem]'>Or continue with</p>
 
 					<div className='flex gap-7'>
-						<div className='border-[1px] border-[#a2a2a2] rounded-md p-[0.33rem] group cursor-pointer'>
+						<div
+							className='border-[1px] border-[#a2a2a2] rounded-md p-[0.33rem] group cursor-pointer'
+							onClick={Oauth}
+						>
 							<Image
 								src={googleicon}
 								alt='Google Icon'
 								className='group-hover:scale-110 duration-500 ease-in-out'
 							/>
 						</div>
-						<div className='border-[1px] border-[#a2a2a2] rounded-md p-[0.33rem] group cursor-pointer'>
+						<div
+							className='border-[1px] border-[#a2a2a2] rounded-md p-[0.33rem] group cursor-pointer'
+							onClick={Oauth}
+						>
 							<Image
 								src={facebookicon}
 								alt='facebook Icon'
