@@ -20,7 +20,7 @@ import { useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import axios from 'axios';
 import Link from 'next/link';
-
+// login logic for the meta
 const Login = () => {
 	const { token, setToken, setAddress, getNonce, setUser } = useAppContext();
 	const [showPassword, setShowPassword] = useState(false);
