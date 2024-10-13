@@ -21,6 +21,7 @@ import { useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import { useAppContext } from '../context';
 
+// SIGN UP FN
 const SignUp = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const [fullname, setFullname] = useState('');
